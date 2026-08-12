@@ -72,7 +72,6 @@ function PropertyListPage() {
             {displayed.map((p) => (
               <PropertyCard
                 key={p.id}
-                id={p.id}
                 title={p.title}
                 excerpt={p.excerpt}
                 slug={p.slug}

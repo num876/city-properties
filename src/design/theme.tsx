@@ -1,5 +1,6 @@
 // src/design/theme.tsx
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
+import type { ReactNode } from 'react';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 import { colors, spacing, fonts, shadows } from './tokens';
 
@@ -57,7 +58,7 @@ export const ThemeProvider = ({ children }: ProviderProps) => {
     localStorage.setItem('prefers-dark', JSON.stringify(isDark));
   }, [isDark]);
 
-  const toggleTheme = () => setIsDark((prev) => !prev);
+  const toggleTheme = () => setIsDark((prev: boolean) => !prev);
 
   const theme = isDark ? darkTheme : lightTheme;
 

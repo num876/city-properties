@@ -1,6 +1,6 @@
 // src/pages/HomePage.tsx
 import { Helmet } from 'react-helmet-async';
-import { colors, spacing, fonts, shadows } from '../design/tokens';
+import { colors, spacing, fonts } from '../design/tokens';
 import heroImg from '../assets/hero.png';
 
 const sectionStyle: React.CSSProperties = {

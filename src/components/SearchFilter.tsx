@@ -1,5 +1,6 @@
 // src/components/SearchFilter.tsx
-import { useState, ChangeEvent } from 'react';
+import { useState } from 'react';
+import type { ChangeEvent } from 'react';
 import { spacing, fonts, colors } from '../design/tokens';
 import { motion } from 'framer-motion';
 

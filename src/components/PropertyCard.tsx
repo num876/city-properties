@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { colors, spacing, fonts } from '../design/tokens';
 
 interface PropertyCardProps {
-  id: string;
+  // id removed as unused
   title: string;
   excerpt: string;
   slug: string;
@@ -31,7 +31,7 @@ const contentStyle: React.CSSProperties = {
   padding: spacing.sm,
 };
 
-function PropertyCard({ id, title, excerpt, slug, imageUrl, imageAlt }: PropertyCardProps) {
+function PropertyCard({ title, excerpt, slug, imageUrl, imageAlt }: PropertyCardProps) {
   return (
     <Link to={`/properties/${slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
       <div
