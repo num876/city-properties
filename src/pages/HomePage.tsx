@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import Hero from '../components/Hero';
+import FeaturedProperties from '../components/FeaturedProperties';
 import StatsCounter from '../components/StatsCounter';
 import IconFeature from '../components/IconFeature';
 import TestimonialsCarousel from '../components/TestimonialsCarousel';
@@ -48,32 +49,7 @@ export default function HomePage() {
 
       <StatsCounter stats={STATS} />
 
-      {/* Featured Properties CTA */}
-      <motion.section
-        initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionReveal}
-        style={{ padding: '5rem 5vw', background: 'var(--color-bg)', textAlign: 'center' }}
-      >
-        <p style={{ fontSize: '0.8rem', letterSpacing: '3px', textTransform: 'uppercase', color: '#4C57F4', fontFamily: "'Inter', sans-serif", marginBottom: '0.5rem' }}>Browse Our Portfolio</p>
-        <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', color: 'var(--color-text)', marginBottom: '1rem' }}>
-          Find Your Perfect Property
-        </h2>
-        <p style={{ color: 'var(--color-text-muted)', fontSize: '1.05rem', maxWidth: '560px', margin: '0 auto 2.5rem', fontFamily: "'Inter', sans-serif", lineHeight: 1.7 }}>
-          Browse our curated selection of flats, houses, and studios across Oxford's most sought-after neighbourhoods.
-        </p>
-        <motion.button
-          whileHover={{ scale: 1.04, boxShadow: '0 8px 28px rgba(76,87,244,0.35)' }}
-          whileTap={{ scale: 0.97 }}
-          onClick={() => navigate('/properties')}
-          style={{
-            padding: '0.9rem 2.5rem', fontSize: '1rem', fontWeight: 600,
-            background: 'linear-gradient(90deg, #4C57F4, #20A6E8)',
-            border: 'none', borderRadius: '10px', color: '#fff', cursor: 'pointer',
-            fontFamily: "'Inter', sans-serif",
-          }}
-        >
-          View All Properties →
-        </motion.button>
-      </motion.section>
+      <FeaturedProperties />
 
       {/* Why Choose Us */}
       <section style={{ padding: '5rem 5vw', background: 'linear-gradient(135deg, #f8f9ff 0%, #eef2ff 100%)' }}>
