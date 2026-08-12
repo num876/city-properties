@@ -114,28 +114,20 @@ export default function Header() {
           to="/"
           style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '12px' }}
         >
-          <motion.div
-            whileHover={{ rotate: 10, scale: 1.1 }}
+          <motion.img
+            src="/images/logo.jpg"
+            alt="City Properties"
+            whileHover={{ scale: 1.05 }}
             transition={{ type: 'spring', stiffness: 400, damping: 10 }}
             style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: '12px',
-              background: 'linear-gradient(135deg, #4C57F4, #20A6E8)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#fff',
-              fontWeight: 800,
-              fontSize: '0.85rem',
-              fontFamily: "'Inter', sans-serif",
-              boxShadow: '0 4px 16px rgba(76,87,244,0.5)',
-              letterSpacing: '0.5px',
+              width: '42px',
+              height: '42px',
+              borderRadius: '10px',
+              objectFit: 'cover',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
               flexShrink: 0,
             }}
-          >
-            CP
-          </motion.div>
+          />
           <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1 }}>
             <span
               style={{
