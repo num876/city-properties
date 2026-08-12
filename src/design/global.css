@@ -1,0 +1,46 @@
+/* src/design/global.css */
+/* Reset & base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  font-family: var(--sans, 'Inter', sans-serif);
+  background: var(--bg, #fff);
+  color: var(--text, #212529);
+  transition: background 0.3s ease, color 0.3s ease;
+  scroll-behavior: smooth;
+}
+
+/* Smooth font rendering */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Utility classes */
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Glassmorphism backdrop */
+.glass {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(12px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: var(--shadow, 0 4px 12px rgba(0,0,0,0.1));
+}
+
+/* Dark mode overrides */
+@media (prefers-color-scheme: dark) {
+  .glass {
+    background: rgba(30, 30, 30, 0.25);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+}

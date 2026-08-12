@@ -1,9 +1,8 @@
 // src/components/PropertyCard.tsx
 import { Link } from 'react-router-dom';
-import { colors, spacing, fonts } from '../design/tokens';
+import GlassCard from './GlassCard';
 
 interface PropertyCardProps {
-  // id removed as unused
   title: string;
   excerpt: string;
   slug: string;
@@ -11,48 +10,53 @@ interface PropertyCardProps {
   imageAlt?: string;
 }
 
-const cardStyle: React.CSSProperties = {
-  backgroundColor: colors.white,
-  borderRadius: '8px',
-  boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
-  overflow: 'hidden',
-  textAlign: 'center',
-  fontFamily: fonts.body,
-  transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-};
+const PLACEHOLDER =
+  'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&q=80';
 
-const imageStyle: React.CSSProperties = {
-  width: '100%',
-  height: '180px',
-  objectFit: 'cover',
-};
-
-const contentStyle: React.CSSProperties = {
-  padding: spacing.sm,
-};
-
-function PropertyCard({ title, excerpt, slug, imageUrl, imageAlt }: PropertyCardProps) {
+export default function PropertyCard({
+  title,
+  excerpt,
+  slug,
+  imageUrl,
+  imageAlt,
+}: PropertyCardProps) {
   return (
-    <Link to={`/properties/${slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-      <div
-        style={cardStyle}
-        onMouseEnter={(e) => {
-          (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-4px)';
-          (e.currentTarget as HTMLDivElement).style.boxShadow = '0 8px 16px rgba(0,0,0,0.12)';
-        }}
-        onMouseLeave={(e) => {
-          (e.currentTarget as HTMLDivElement).style.transform = 'none';
-          (e.currentTarget as HTMLDivElement).style.boxShadow = '0 4px 12px rgba(0,0,0,0.08)';
-        }}
-      >
-        {imageUrl && <img src={imageUrl} alt={imageAlt ?? ''} style={imageStyle} />}
-        <div style={contentStyle}>
-          <h3 style={{ margin: spacing.sm }}>{title}</h3>
-          <p style={{ fontSize: '0.9rem' }} dangerouslySetInnerHTML={{ __html: excerpt }} />
+    <Link to={'/properties/' + slug} style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+      <GlassCard>
+        <img
+          src={imageUrl || PLACEHOLDER}
+          alt={imageAlt ?? title}
+          style={{ width: '100%', height: '200px', objectFit: 'cover', display: 'block' }}
+        />
+        <div style={{ padding: '1.1rem 1.25rem 1.25rem' }}>
+          <h3
+            style={{
+              fontFamily: "'Playfair Display', serif",
+              fontSize: '1.1rem',
+              fontWeight: 700,
+              color: '#111',
+              marginBottom: '0.5rem',
+            }}
+          >
+            {title}
+          </h3>
+          <p
+            style={{ fontSize: '0.88rem', color: '#666', lineHeight: 1.6 }}
+            dangerouslySetInnerHTML={{ __html: excerpt }}
+          />
+          <div
+            style={{
+              marginTop: '1rem',
+              color: '#4C57F4',
+              fontWeight: 600,
+              fontSize: '0.88rem',
+              fontFamily: "'Inter', sans-serif",
+            }}
+          >
+            View Details →
+          </div>
         </div>
-      </div>
+      </GlassCard>
     </Link>
   );
 }
-
-export default PropertyCard;
