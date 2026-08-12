@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://city-properties-theta.vercel.app/sitemap.xml

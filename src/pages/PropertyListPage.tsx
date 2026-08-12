@@ -1,10 +1,10 @@
-// src/pages/PropertyListPage.tsx
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { client, GET_PROPERTIES } from '../api/wordpress';
 import PropertyCard from '../components/PropertyCard';
 import SearchFilter from '../components/SearchFilter';
+import Skeleton from '../components/Skeleton';
 
 interface Property {
   id: string;
@@ -15,17 +15,16 @@ interface Property {
 }
 
 export default function PropertyListPage() {
-  const [allProperties, setAllProperties] = useState<Property[]>([]);
+  const [all, setAll] = useState<Property[]>([]);
   const [displayed, setDisplayed] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    client
-      .request(GET_PROPERTIES)
+    client.request(GET_PROPERTIES)
       .then((data) => {
         const edges = (data as any).properties?.edges || [];
         const props = edges.map((e: any) => e.node);
-        setAllProperties(props);
+        setAll(props);
         setDisplayed(props);
         setLoading(false);
       })
@@ -33,102 +32,59 @@ export default function PropertyListPage() {
   }, []);
 
   const handleSearch = (term: string) => {
-    if (!term) {
-      setDisplayed(allProperties);
-      return;
-    }
+    if (!term) { setDisplayed(all); return; }
     const low = term.toLowerCase();
-    setDisplayed(
-      allProperties.filter(
-        (p) =>
-          p.title.toLowerCase().includes(low) ||
-          p.excerpt.toLowerCase().includes(low),
-      ),
-    );
+    setDisplayed(all.filter((p) => p.title.toLowerCase().includes(low) || p.excerpt.toLowerCase().includes(low)));
   };
 
   return (
     <>
       <Helmet>
-        <title>Properties - City Properties Oxford</title>
-        <meta
-          name="description"
-          content="Browse available rental properties in Oxford managed by City Properties."
-        />
+        <title>Properties – City Properties Oxford</title>
+        <meta name="description" content="Browse available rental properties in Oxford managed by City Properties." />
       </Helmet>
 
-      <section
-        style={{
-          background: 'linear-gradient(135deg, #4C57F4 0%, #20A6E8 100%)',
-          padding: '3.5rem 5vw 2.5rem',
-          color: '#fff',
-        }}
-      >
+      <section style={{ background: 'linear-gradient(135deg, #4C57F4 0%, #20A6E8 100%)', padding: '3.5rem 5vw 2.5rem', color: '#fff' }}>
         <motion.h1
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          style={{
-            fontFamily: "'Playfair Display', serif",
-            fontSize: 'clamp(2rem, 4vw, 3.2rem)',
-            marginBottom: '0.5rem',
-          }}
+          initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+          style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(2rem, 4vw, 3.2rem)', marginBottom: '0.5rem' }}
         >
           Available Properties
         </motion.h1>
         <p style={{ fontFamily: "'Inter', sans-serif", opacity: 0.85, fontSize: '1.05rem' }}>
-          Hand-picked homes in Oxford's most desirable neighbourhoods
+          Hand-picked homes across Oxford's finest neighbourhoods
         </p>
       </section>
 
-      <div style={{ padding: '1.5rem 5vw', background: '#f8f9ff' }}>
+      <div style={{ padding: '1.5rem 5vw', background: 'var(--color-bg)', borderBottom: '1px solid var(--color-border)' }}>
         <SearchFilter onSearch={handleSearch} />
       </div>
 
-      <section style={{ padding: '2rem 5vw 4rem', background: '#f8f9ff', minHeight: '50vh' }}>
+      <section style={{ padding: '2.5rem 5vw 4rem', background: 'var(--color-bg)', minHeight: '50vh' }}>
         {loading ? (
-          <div
-            style={{
-              textAlign: 'center',
-              padding: '4rem',
-              color: '#666',
-              fontFamily: "'Inter', sans-serif",
-            }}
-          >
-            Loading properties…
+          <div style={{ display: 'grid', gap: '1.5rem', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}>
+            {[1, 2, 3, 4, 5, 6].map((i) => <Skeleton key={i} height="320px" />)}
           </div>
         ) : displayed.length === 0 ? (
-          <div
-            style={{
-              textAlign: 'center',
-              padding: '4rem',
-              color: '#666',
-              fontFamily: "'Inter', sans-serif",
-            }}
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+            style={{ textAlign: 'center', padding: '5rem 2rem' }}
           >
-            No properties found.
-          </div>
+            <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🏚</div>
+            <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.5rem', color: 'var(--color-text)', marginBottom: '0.5rem' }}>No Properties Found</h3>
+            <p style={{ color: 'var(--color-text-muted)', fontFamily: "'Inter', sans-serif" }}>Try adjusting your search terms.</p>
+          </motion.div>
         ) : (
           <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
-            style={{
-              display: 'grid',
-              gap: '1.5rem',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-            }}
+            initial="hidden" animate="visible"
+            variants={{ visible: { transition: { staggerChildren: 0.07 } } }}
+            style={{ display: 'grid', gap: '1.5rem', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}
           >
             {displayed.map((p) => (
-              <motion.div
-                key={p.id}
-                variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }}
-              >
+              <motion.div key={p.id} variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }}>
                 <PropertyCard
-                  title={p.title}
-                  excerpt={p.excerpt}
-                  slug={p.slug}
-                  imageUrl={p.featuredImage?.node.sourceUrl}
-                  imageAlt={p.featuredImage?.node.altText}
+                  title={p.title} excerpt={p.excerpt} slug={p.slug}
+                  imageUrl={p.featuredImage?.node.sourceUrl} imageAlt={p.featuredImage?.node.altText}
                 />
               </motion.div>
             ))}
