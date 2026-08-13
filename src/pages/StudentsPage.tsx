@@ -10,7 +10,7 @@ const STUDENT_PROPERTIES = [
     title: 'Chester Street, Cowley',
     excerpt: '<p>Ideal location for students who want to be close to university but also the city centre & Cowley Road. The property is spread over 2 storeys and has all double bedrooms, living room, kitchen w/dining area, bathroom, additional w/c, & separate shower and a large garden.</p>',
     slug: 'chester-street-cowley',
-    featuredImage: { node: { sourceUrl: '/images/area-cowley.jpg', altText: 'Chester Street, Cowley' } },
+    featuredImage: { node: { sourceUrl: '/images/demo_student_chester.jpg', altText: 'Chester Street, Cowley' } },
     price: '£2,800 pcm', bedrooms: 4, type: 'House',
   },
   {
@@ -18,7 +18,7 @@ const STUDENT_PROPERTIES = [
     title: 'Ridgefield Road, Cowley',
     excerpt: '<p>Perfect location for students – the property is located within minutes of City Arms is within walking distance to City Centre & Oxford Brookes. The property consists of all double bedrooms, large open living / kitchen area, 2 bathrooms, garden w/ side entrance; & off street parking.</p>',
     slug: 'ridgefield-road-cowley',
-    featuredImage: { node: { sourceUrl: '/images/area-cowley.jpg', altText: 'Ridgefield Road, Cowley' } },
+    featuredImage: { node: { sourceUrl: '/images/demo_student_ridgefield.jpg', altText: 'Ridgefield Road, Cowley' } },
     price: '£2,800 pcm', bedrooms: 4, type: 'House',
   },
   {
@@ -26,7 +26,7 @@ const STUDENT_PROPERTIES = [
     title: 'Southfield Road, Cowley',
     excerpt: '<p>Excellent location – the property is located just off the vibrant Cowley Road and is within walking distance to City Centre & Oxford Brookes. The property consists of all double bedrooms, large kitchen w/ dining area, bathroom, additional w/c, living rooms and garden w/ side entrance.</p>',
     slug: 'southfield-road-cowley',
-    featuredImage: { node: { sourceUrl: '/images/area-cowley.jpg', altText: 'Southfield Road, Cowley' } },
+    featuredImage: { node: { sourceUrl: '/images/demo_student_southfield.jpg', altText: 'Southfield Road, Cowley' } },
     price: '£3,000 pcm', bedrooms: 4, type: 'House',
   },
   {
@@ -34,7 +34,7 @@ const STUDENT_PROPERTIES = [
     title: 'Hurst Street, Cowley',
     excerpt: '<p>A student’s dream, within walking distance to both main Universities and city centre and on the doorstep to the famous Cowley Road shops/ cafes/ restaurants. The property consists of all double bedrooms, kitchen, living room, bathroom, additional w/c & front and back garden.</p>',
     slug: 'hurst-street-cowley',
-    featuredImage: { node: { sourceUrl: '/images/area-cowley.jpg', altText: 'Hurst Street, Cowley' } },
+    featuredImage: { node: { sourceUrl: '/images/demo_student_hurst.jpg', altText: 'Hurst Street, Cowley' } },
     price: '£2,700 pcm', bedrooms: 4, type: 'House',
   },
   {
@@ -42,7 +42,7 @@ const STUDENT_PROPERTIES = [
     title: 'St Mary’s Road, Cowley',
     excerpt: '<p>Ideal location within walking distance to Universities and City Centre. The property has all double bedrooms, bathroom, shower room, additional w/c, kitchen w/ dining area, living room and garden.</p>',
     slug: 'st-marys-road-cowley-5',
-    featuredImage: { node: { sourceUrl: '/images/area-cowley.jpg', altText: 'St Mary’s Road, Cowley' } },
+    featuredImage: { node: { sourceUrl: '/images/demo_student_hmo.jpg', altText: 'St Mary’s Road, Cowley' } },
     price: '£3,750 pcm', bedrooms: 5, type: 'House',
   },
   {
@@ -50,7 +50,7 @@ const STUDENT_PROPERTIES = [
     title: 'Ridgefield Road, Cowley',
     excerpt: '<p>Perfect location for students within minutes of City Arms and walking distance to Universities and City Centre. The property has all double bedrooms, bathroom, shower room, kitchen w/ dining area, living room, large garden and off street parking for 2/3 cars.</p>',
     slug: 'ridgefield-road-cowley-5',
-    featuredImage: { node: { sourceUrl: '/images/area-cowley.jpg', altText: 'Ridgefield Road, Cowley' } },
+    featuredImage: { node: { sourceUrl: '/images/demo_student_ridgefield.jpg', altText: 'Ridgefield Road, Cowley' } },
     price: '£3,625 pcm', bedrooms: 5, type: 'House',
   },
   {
@@ -58,7 +58,7 @@ const STUDENT_PROPERTIES = [
     title: 'Bartlemas Road, Cowley',
     excerpt: '<p>Excellent location, with 2 living rooms! The property is located just off the vibrant Cowley Road and is withing walking distance to City Centre & Oxford Brookes. The property consists of all double bedrooms, large kitchen w/ dining area, bathroom, shower room, additional w/c, 2 living rooms and garden.</p>',
     slug: 'bartlemas-road-cowley',
-    featuredImage: { node: { sourceUrl: '/images/area-cowley.jpg', altText: 'Bartlemas Road, Cowley' } },
+    featuredImage: { node: { sourceUrl: '/images/demo_student_southfield.jpg', altText: 'Bartlemas Road, Cowley' } },
     price: '£3,750 pcm', bedrooms: 5, type: 'House',
   },
   {
@@ -66,7 +66,7 @@ const STUDENT_PROPERTIES = [
     title: 'The Slade, Headington',
     excerpt: '<p>Modern property with all double bedrooms and 3 bathrooms (2 of which are en-suites). The property is located with excellent links to City Centre and Universities. The property also consists of large open plan living room/kitchen, garden with side entrance and off street parking for 2/3 cars.</p>',
     slug: 'the-slade-headington',
-    featuredImage: { node: { sourceUrl: '/images/area-headington.jpg', altText: 'The Slade, Headington' } },
+    featuredImage: { node: { sourceUrl: '/images/demo_student_chester.jpg', altText: 'The Slade, Headington' } },
     price: '£3,500 pcm', bedrooms: 5, type: 'House',
   },
   {
@@ -74,7 +74,7 @@ const STUDENT_PROPERTIES = [
     title: 'St Mary’s Road, Cowley',
     excerpt: '<p>Ideal location within walking distance to Universities and City Centre. The property has all double bedrooms, 3 bathrooms, large open living / kitchen space, garden and off street parking for at least 2 cars.</p>',
     slug: 'st-marys-road-cowley-6',
-    featuredImage: { node: { sourceUrl: '/images/area-cowley.jpg', altText: 'St Mary’s Road, Cowley' } },
+    featuredImage: { node: { sourceUrl: '/images/demo_student_hmo.jpg', altText: 'St Mary’s Road, Cowley' } },
     price: '£4,350 pcm', bedrooms: 6, type: 'House',
   },
   {
@@ -82,7 +82,7 @@ const STUDENT_PROPERTIES = [
     title: 'Iffley Road, Cowley',
     excerpt: '<p>Perfect location by St Clements roundabout. Walking distance to Universities and City Centre. The property has all double bedrooms, 2 bathrooms, additional shower, additional w/c, 2 kitchens, living room and garden.</p>',
     slug: 'iffley-road-cowley',
-    featuredImage: { node: { sourceUrl: '/images/area-cowley.jpg', altText: 'Iffley Road, Cowley' } },
+    featuredImage: { node: { sourceUrl: '/images/demo_student_hurst.jpg', altText: 'Iffley Road, Cowley' } },
     price: '£4,500 pcm', bedrooms: 6, type: 'House',
   },
 ];

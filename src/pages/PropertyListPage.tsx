@@ -24,7 +24,7 @@ const DEMO_PROPERTIES: Property[] = [
     title: 'Luxury Apartment, Summertown',
     excerpt: '<p>A stunning two-bedroom apartment in the heart of Summertown with modern open-plan living and a private balcony.</p>',
     slug: 'luxury-apartment-summertown',
-    featuredImage: { node: { sourceUrl: '/images/area-centre.jpg', altText: 'Summertown Apartment' } },
+    featuredImage: { node: { sourceUrl: '/images/demo_luxury_apt.jpg', altText: 'Summertown Apartment' } },
     price: '£1,850 pcm', bedrooms: 2, bathrooms: 2, type: 'Apartment',
   },
   {
@@ -32,7 +32,7 @@ const DEMO_PROPERTIES: Property[] = [
     title: 'Victorian Townhouse, Jericho',
     excerpt: '<p>Beautifully restored three-bedroom Victorian townhouse in sought-after Jericho with original features throughout.</p>',
     slug: 'victorian-townhouse-jericho',
-    featuredImage: { node: { sourceUrl: '/images/area-headington.jpg', altText: 'Jericho Townhouse' } },
+    featuredImage: { node: { sourceUrl: '/images/demo_victorian_townhouse.jpg', altText: 'Jericho Townhouse' } },
     price: '£2,200 pcm', bedrooms: 3, bathrooms: 2, type: 'House',
   },
   {
@@ -40,7 +40,7 @@ const DEMO_PROPERTIES: Property[] = [
     title: 'Modern Studio, Cowley Road',
     excerpt: '<p>Sleek and contemporary studio flat with high-spec finishes and excellent transport links to the city centre.</p>',
     slug: 'modern-studio-cowley',
-    featuredImage: { node: { sourceUrl: '/images/area-cowley.jpg', altText: 'Cowley Studio' } },
+    featuredImage: { node: { sourceUrl: '/images/demo_modern_studio.jpg', altText: 'Cowley Studio' } },
     price: '£950 pcm', bedrooms: 1, bathrooms: 1, type: 'Studio',
   },
   {
@@ -48,7 +48,7 @@ const DEMO_PROPERTIES: Property[] = [
     title: 'Penthouse Suite, City Centre',
     excerpt: '<p>Exceptional top-floor penthouse with panoramic views over Oxford\'s dreaming spires. Concierge service included.</p>',
     slug: 'penthouse-city-centre',
-    featuredImage: { node: { sourceUrl: '/images/area-centre.jpg', altText: 'Oxford Penthouse' } },
+    featuredImage: { node: { sourceUrl: '/images/demo_penthouse.jpg', altText: 'Oxford Penthouse' } },
     price: '£3,500 pcm', bedrooms: 3, bathrooms: 3, type: 'Penthouse',
   },
   {
@@ -56,7 +56,7 @@ const DEMO_PROPERTIES: Property[] = [
     title: 'Cottage, Old Marston',
     excerpt: '<p>Charming two-bedroom period cottage with a private garden, exposed beams, and a wood-burning fireplace.</p>',
     slug: 'cottage-old-marston',
-    featuredImage: { node: { sourceUrl: '/images/area-headington.jpg', altText: 'Old Marston Cottage' } },
+    featuredImage: { node: { sourceUrl: '/images/demo_cottage.jpg', altText: 'Old Marston Cottage' } },
     price: '£1,400 pcm', bedrooms: 2, bathrooms: 1, type: 'Cottage',
   },
   {
@@ -64,7 +64,7 @@ const DEMO_PROPERTIES: Property[] = [
     title: 'Riverside Flat, Osney',
     excerpt: '<p>Bright one-bedroom riverside flat with stunning water views, a modern kitchen, and off-street parking.</p>',
     slug: 'riverside-flat-osney',
-    featuredImage: { node: { sourceUrl: '/images/area-cowley.jpg', altText: 'Osney Flat' } },
+    featuredImage: { node: { sourceUrl: '/images/demo_riverside_flat.jpg', altText: 'Osney Flat' } },
     price: '£1,300 pcm', bedrooms: 1, bathrooms: 1, type: 'Flat',
   },
   {
@@ -72,7 +72,7 @@ const DEMO_PROPERTIES: Property[] = [
     title: 'Executive Home, Headington',
     excerpt: '<p>Spacious four-bedroom detached executive home in Headington with a landscaped garden and double garage.</p>',
     slug: 'executive-home-headington',
-    featuredImage: { node: { sourceUrl: '/images/area-headington.jpg', altText: 'Headington Home' } },
+    featuredImage: { node: { sourceUrl: '/images/demo_exec_home.jpg', altText: 'Headington Home' } },
     price: '£3,200 pcm', bedrooms: 4, bathrooms: 3, type: 'House',
   },
   {
@@ -80,7 +80,7 @@ const DEMO_PROPERTIES: Property[] = [
     title: 'Garden Flat, Botley',
     excerpt: '<p>Light-filled two-bedroom ground floor flat with direct access to a large private garden and on-site parking.</p>',
     slug: 'garden-flat-botley',
-    featuredImage: { node: { sourceUrl: '/images/area-cowley.jpg', altText: 'Botley Garden Flat' } },
+    featuredImage: { node: { sourceUrl: '/images/demo_garden_flat.jpg', altText: 'Botley Garden Flat' } },
     price: '£1,150 pcm', bedrooms: 2, bathrooms: 1, type: 'Flat',
   },
   {
@@ -88,7 +88,7 @@ const DEMO_PROPERTIES: Property[] = [
     title: 'Student House, East Oxford',
     excerpt: '<p>Well-maintained five-bedroom HMO in popular East Oxford, close to Brookes and the city centre, available September.</p>',
     slug: 'student-house-east-oxford',
-    featuredImage: { node: { sourceUrl: '/images/area-centre.jpg', altText: 'East Oxford Student House' } },
+    featuredImage: { node: { sourceUrl: '/images/demo_student_hmo.jpg', altText: 'East Oxford Student House' } },
     price: '£550 pppm', bedrooms: 5, bathrooms: 2, type: 'HMO',
   },
 ];
