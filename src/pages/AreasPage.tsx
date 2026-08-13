@@ -73,8 +73,13 @@ export default function AreasPage() {
                 <motion.div 
                   key={area.slug}
                   layout
-                  initial={{ opacity: 0, y: 30 }} 
-                  whileInView={{ opacity: 1, y: 0 }}
+                  variants={{
+                    initial: { opacity: 0, y: 30 },
+                    visible: { opacity: 1, y: 0 },
+                    hover: {}
+                  }}
+                  initial="initial"
+                  whileInView="visible"
                   viewport={{ once: true, margin: '-50px' }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ type: 'spring', stiffness: 260, damping: 25, delay: i * 0.08 }}
@@ -88,7 +93,6 @@ export default function AreasPage() {
                     boxShadow: '0 8px 30px rgba(0,0,0,0.1)',
                   }}
                   whileHover="hover"
-                  initial="initial"
                 >
                   {/* Background image panning */}
                   <motion.img
