@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { ThemeProvider } from './design/theme';
 import Header from './components/Header';
@@ -24,6 +24,16 @@ function PageLoader() {
   return <div style={{ padding: '4rem 5vw' }}><Skeleton height="400px" /></div>;
 }
 
+function PageWrapper({ children }: { children: React.ReactNode }) {
+  const location = useLocation();
+  const isHome = location.pathname === '/';
+  return (
+    <div style={{ paddingTop: isHome ? '0' : '90px' }}>
+      {children}
+    </div>
+  );
+}
+
 export default function App() {
   return (
     <HelmetProvider>
@@ -32,21 +42,23 @@ export default function App() {
           <ScrollProgress />
           <Header />
           <main>
-            <Suspense fallback={<PageLoader />}>
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/properties" element={<PropertyListPage />} />
-                <Route path="/properties/:slug" element={<PropertyDetailPage />} />
-                <Route path="/about" element={<AboutPage />} />
-                <Route path="/contact" element={<ContactPage />} />
-                <Route path="/areas" element={<AreasPage />} />
-                <Route path="/tenants" element={<TenantsPage />} />
-                <Route path="/landlords" element={<LandlordsPage />} />
-                <Route path="/students" element={<StudentsPage />} />
-                <Route path="/maintenance" element={<MaintenancePage />} />
-                <Route path="*" element={<NotFoundPage />} />
-              </Routes>
-            </Suspense>
+            <PageWrapper>
+              <Suspense fallback={<PageLoader />}>
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/properties" element={<PropertyListPage />} />
+                  <Route path="/properties/:slug" element={<PropertyDetailPage />} />
+                  <Route path="/about" element={<AboutPage />} />
+                  <Route path="/contact" element={<ContactPage />} />
+                  <Route path="/areas" element={<AreasPage />} />
+                  <Route path="/tenants" element={<TenantsPage />} />
+                  <Route path="/landlords" element={<LandlordsPage />} />
+                  <Route path="/students" element={<StudentsPage />} />
+                  <Route path="/maintenance" element={<MaintenancePage />} />
+                  <Route path="*" element={<NotFoundPage />} />
+                </Routes>
+              </Suspense>
+            </PageWrapper>
           </main>
           <Footer />
           <BackToTop />
