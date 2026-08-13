@@ -12,7 +12,86 @@ interface Property {
   excerpt: string;
   slug: string;
   featuredImage?: { node: { sourceUrl: string; altText: string } };
+  price?: string;
+  bedrooms?: number;
+  bathrooms?: number;
+  type?: string;
 }
+
+const DEMO_PROPERTIES: Property[] = [
+  {
+    id: 'demo-1',
+    title: 'Luxury Apartment, Summertown',
+    excerpt: '<p>A stunning two-bedroom apartment in the heart of Summertown with modern open-plan living and a private balcony.</p>',
+    slug: 'luxury-apartment-summertown',
+    featuredImage: { node: { sourceUrl: '/images/area-centre.jpg', altText: 'Summertown Apartment' } },
+    price: '£1,850 pcm', bedrooms: 2, bathrooms: 2, type: 'Apartment',
+  },
+  {
+    id: 'demo-2',
+    title: 'Victorian Townhouse, Jericho',
+    excerpt: '<p>Beautifully restored three-bedroom Victorian townhouse in sought-after Jericho with original features throughout.</p>',
+    slug: 'victorian-townhouse-jericho',
+    featuredImage: { node: { sourceUrl: '/images/area-headington.jpg', altText: 'Jericho Townhouse' } },
+    price: '£2,200 pcm', bedrooms: 3, bathrooms: 2, type: 'House',
+  },
+  {
+    id: 'demo-3',
+    title: 'Modern Studio, Cowley Road',
+    excerpt: '<p>Sleek and contemporary studio flat with high-spec finishes and excellent transport links to the city centre.</p>',
+    slug: 'modern-studio-cowley',
+    featuredImage: { node: { sourceUrl: '/images/area-cowley.jpg', altText: 'Cowley Studio' } },
+    price: '£950 pcm', bedrooms: 1, bathrooms: 1, type: 'Studio',
+  },
+  {
+    id: 'demo-4',
+    title: 'Penthouse Suite, City Centre',
+    excerpt: '<p>Exceptional top-floor penthouse with panoramic views over Oxford\'s dreaming spires. Concierge service included.</p>',
+    slug: 'penthouse-city-centre',
+    featuredImage: { node: { sourceUrl: '/images/area-centre.jpg', altText: 'Oxford Penthouse' } },
+    price: '£3,500 pcm', bedrooms: 3, bathrooms: 3, type: 'Penthouse',
+  },
+  {
+    id: 'demo-5',
+    title: 'Cottage, Old Marston',
+    excerpt: '<p>Charming two-bedroom period cottage with a private garden, exposed beams, and a wood-burning fireplace.</p>',
+    slug: 'cottage-old-marston',
+    featuredImage: { node: { sourceUrl: '/images/area-headington.jpg', altText: 'Old Marston Cottage' } },
+    price: '£1,400 pcm', bedrooms: 2, bathrooms: 1, type: 'Cottage',
+  },
+  {
+    id: 'demo-6',
+    title: 'Riverside Flat, Osney',
+    excerpt: '<p>Bright one-bedroom riverside flat with stunning water views, a modern kitchen, and off-street parking.</p>',
+    slug: 'riverside-flat-osney',
+    featuredImage: { node: { sourceUrl: '/images/area-cowley.jpg', altText: 'Osney Flat' } },
+    price: '£1,300 pcm', bedrooms: 1, bathrooms: 1, type: 'Flat',
+  },
+  {
+    id: 'demo-7',
+    title: 'Executive Home, Headington',
+    excerpt: '<p>Spacious four-bedroom detached executive home in Headington with a landscaped garden and double garage.</p>',
+    slug: 'executive-home-headington',
+    featuredImage: { node: { sourceUrl: '/images/area-headington.jpg', altText: 'Headington Home' } },
+    price: '£3,200 pcm', bedrooms: 4, bathrooms: 3, type: 'House',
+  },
+  {
+    id: 'demo-8',
+    title: 'Garden Flat, Botley',
+    excerpt: '<p>Light-filled two-bedroom ground floor flat with direct access to a large private garden and on-site parking.</p>',
+    slug: 'garden-flat-botley',
+    featuredImage: { node: { sourceUrl: '/images/area-cowley.jpg', altText: 'Botley Garden Flat' } },
+    price: '£1,150 pcm', bedrooms: 2, bathrooms: 1, type: 'Flat',
+  },
+  {
+    id: 'demo-9',
+    title: 'Student House, East Oxford',
+    excerpt: '<p>Well-maintained five-bedroom HMO in popular East Oxford, close to Brookes and the city centre, available September.</p>',
+    slug: 'student-house-east-oxford',
+    featuredImage: { node: { sourceUrl: '/images/area-centre.jpg', altText: 'East Oxford Student House' } },
+    price: '£550 pppm', bedrooms: 5, bathrooms: 2, type: 'HMO',
+  },
+];
 
 export default function PropertyListPage() {
   const [all, setAll] = useState<Property[]>([]);
@@ -24,11 +103,20 @@ export default function PropertyListPage() {
       .then((data) => {
         const edges = (data as any).properties?.edges || [];
         const props = edges.map((e: any) => e.node);
-        setAll(props);
-        setDisplayed(props);
+        if (props.length === 0) {
+          setAll(DEMO_PROPERTIES);
+          setDisplayed(DEMO_PROPERTIES);
+        } else {
+          setAll(props);
+          setDisplayed(props);
+        }
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch(() => {
+        setAll(DEMO_PROPERTIES);
+        setDisplayed(DEMO_PROPERTIES);
+        setLoading(false);
+      });
   }, []);
 
   const handleSearch = (term: string) => {
@@ -85,6 +173,7 @@ export default function PropertyListPage() {
                 <PropertyCard
                   title={p.title} excerpt={p.excerpt} slug={p.slug}
                   imageUrl={p.featuredImage?.node.sourceUrl} imageAlt={p.featuredImage?.node.altText}
+                  price={p.price} bedrooms={p.bedrooms} bathrooms={p.bathrooms} type={p.type}
                 />
               </motion.div>
             ))}
