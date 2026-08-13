@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
 const AREAS = [
@@ -20,41 +20,143 @@ export default function AreasPage() {
         <meta name="description" content="Explore Oxford's best neighbourhoods for renting. Area guides from City Properties." />
       </Helmet>
 
-      <section style={{ background: 'linear-gradient(135deg, #4C57F4 0%, #20A6E8 100%)', padding: '3.5rem 5vw 2.5rem', color: '#fff', textAlign: 'center' }}>
-        <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(2rem, 4vw, 3.2rem)', marginBottom: '0.5rem' }}
-        >
-          Oxford Area Guides
-        </motion.h1>
-        <p style={{ fontFamily: "'Inter', sans-serif", opacity: 0.9 }}>Explore Oxford's most sought-after neighbourhoods</p>
+      {/* Cinematic Half-Screen Hero */}
+      <section style={{ 
+        position: 'relative',
+        width: '100%',
+        height: '45vh',
+        minHeight: '350px',
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0 5vw',
+        overflow: 'hidden'
+      }}>
+        {/* Background Image & Gradient */}
+        <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+          <img 
+            src="/images/area-headington.jpg" 
+            alt="Oxford scenic view"
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(10,10,30,0.85) 0%, rgba(10,10,30,0.4) 100%)' }} />
+        </div>
+
+        <div style={{ position: 'relative', zIndex: 1, maxWidth: '1200px', margin: '0 auto', width: '100%' }}>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
+            style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(2.5rem, 5vw, 4rem)', color: '#fff', marginBottom: '0.75rem', lineHeight: 1.1 }}
+          >
+            Oxford Area Guides
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}
+            style={{ fontFamily: "'Inter', sans-serif", opacity: 0.9, fontSize: '1.15rem', color: '#fff', maxWidth: '600px' }}
+          >
+            Every part of Oxford has its own unique character. Dive deep into our local guides to find the neighbourhood that matches your lifestyle perfectly.
+          </motion.p>
+        </div>
       </section>
 
-      <section style={{ padding: '3rem 5vw 5rem', background: 'var(--color-bg)' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem', maxWidth: '1100px', margin: '0 auto' }}>
-          {AREAS.map((area, i) => (
-            <motion.div
-              key={area.slug}
-              initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-              transition={{ delay: i * 0.08 }}
-              onClick={() => navigate('/areas/' + area.slug)}
-              style={{ cursor: 'pointer', borderRadius: '14px', overflow: 'hidden', boxShadow: '0 4px 20px rgba(0,0,0,0.08)', background: 'var(--color-surface)' }}
-            >
-              <div style={{ position: 'relative', overflow: 'hidden' }}>
-                <img src={area.img} alt={area.name} loading="lazy" style={{ width: '100%', height: '200px', objectFit: 'cover', display: 'block', transition: 'transform 0.4s' }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLImageElement).style.transform = 'scale(1.06)'; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLImageElement).style.transform = 'scale(1)'; }}
-                />
-                <span style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'linear-gradient(90deg,#4C57F4,#20A6E8)', color: '#fff', padding: '4px 12px', borderRadius: '999px', fontSize: '0.78rem', fontWeight: 600, fontFamily: "'Inter', sans-serif" }}>
-                  {area.avg}
-                </span>
-              </div>
-              <div style={{ padding: '1.25rem' }}>
-                <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.2rem', color: 'var(--color-text)', marginBottom: '0.5rem' }}>{area.name}</h3>
-                <p style={{ fontSize: '0.88rem', color: 'var(--color-text-muted)', lineHeight: 1.65, fontFamily: "'Inter', sans-serif", marginBottom: '0.75rem' }}>{area.desc}</p>
-                <p style={{ color: '#4C57F4', fontWeight: 600, fontSize: '0.85rem', fontFamily: "'Inter', sans-serif" }}>Explore {area.name} →</p>
-              </div>
-            </motion.div>
-          ))}
+      {/* Grid Section */}
+      <section style={{ padding: '5rem 5vw 7rem', background: 'var(--color-bg)', minHeight: '60vh' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <motion.div
+            layout
+            style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', 
+              gap: '2.5rem' 
+            }}
+          >
+            <AnimatePresence mode="popLayout">
+              {AREAS.map((area, i) => (
+                <motion.div 
+                  key={area.slug}
+                  layout
+                  initial={{ opacity: 0, y: 30 }} 
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-50px' }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ type: 'spring', stiffness: 260, damping: 25, delay: i * 0.08 }}
+                  onClick={() => navigate('/areas/' + area.slug)}
+                  style={{ 
+                    position: 'relative',
+                    cursor: 'pointer', 
+                    borderRadius: '24px', 
+                    overflow: 'hidden', 
+                    height: '420px',
+                    boxShadow: '0 8px 30px rgba(0,0,0,0.1)',
+                  }}
+                  whileHover="hover"
+                  initial="initial"
+                >
+                  {/* Background image panning */}
+                  <motion.img
+                    src={area.img}
+                    alt={area.name}
+                    loading="lazy"
+                    variants={{
+                      initial: { scale: 1, x: 0 },
+                      hover: { scale: 1.08, x: -10 }
+                    }}
+                    transition={{ duration: 1.5, ease: 'easeOut' }}
+                    style={{
+                      position: 'absolute', inset: 0,
+                      width: '100%', height: '100%', objectFit: 'cover'
+                    }}
+                  />
+
+                  {/* Gradient overlay */}
+                  <div style={{
+                    position: 'absolute', inset: 0,
+                    background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0) 100%)',
+                    pointerEvents: 'none'
+                  }} />
+
+                  {/* Glassmorphic Price Badge */}
+                  <div style={{
+                    position: 'absolute', top: '1.25rem', right: '1.25rem',
+                    background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)',
+                    border: '1px solid rgba(255,255,255,0.3)',
+                    color: '#fff', padding: '6px 14px', borderRadius: '999px',
+                    fontSize: '0.8rem', fontWeight: 600, fontFamily: "'Inter', sans-serif",
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                  }}>
+                    from {area.avg}
+                  </div>
+
+                  {/* Content (Bottom) */}
+                  <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '2rem 1.5rem' }}>
+                    <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.8rem', color: '#fff', marginBottom: '0.5rem', lineHeight: 1.1 }}>
+                      {area.name}
+                    </h3>
+                    <motion.p 
+                      variants={{
+                        initial: { opacity: 0.8 },
+                        hover: { opacity: 1 }
+                      }}
+                      style={{ 
+                        fontSize: '0.95rem', color: 'rgba(255,255,255,0.9)', 
+                        lineHeight: 1.6, fontFamily: "'Inter', sans-serif", marginBottom: '1rem' 
+                      }}
+                    >
+                      {area.desc}
+                    </motion.p>
+                    <motion.div
+                      variants={{
+                        initial: { opacity: 0, x: -10 },
+                        hover: { opacity: 1, x: 0 }
+                      }}
+                      transition={{ duration: 0.3 }}
+                      style={{ color: '#fff', fontWeight: 600, fontSize: '0.9rem', fontFamily: "'Inter', sans-serif", display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                    >
+                      Read Guide <span style={{ fontSize: '1.2rem' }}>→</span>
+                    </motion.div>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
         </div>
       </section>
     </>
