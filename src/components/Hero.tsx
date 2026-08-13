@@ -48,7 +48,7 @@ export default function Hero() {
     >
       <div style={{
         position: 'absolute', inset: 0,
-        backgroundImage: "url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2000&q=80')",
+        backgroundImage: "url('/images/demo_luxury_apt.jpg')",
         backgroundSize: 'cover', backgroundPosition: 'center', zIndex: 0,
       }} />
       <div style={{
