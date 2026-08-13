@@ -14,6 +14,7 @@ const NAV_LINKS = [
 
 const MOBILE_EXTRAS = [
   { to: '/tenants', label: 'Tenants Guide' },
+  { to: '/maintenance', label: 'Report Maintenance' },
   { to: '/landlords', label: 'Landlords' },
 ];
 
@@ -278,6 +279,13 @@ export default function Header() {
                     <div>
                       <div style={{ color: 'var(--color-text)', fontWeight: 600, fontFamily: "'Inter', sans-serif", fontSize: '0.95rem' }}>Tenants Guide</div>
                       <div style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem', fontFamily: "'Inter', sans-serif", marginTop: '2px' }}>Step-by-step renting process</div>
+                    </div>
+                  </Link>
+                  <Link to="/maintenance" onClick={() => setServicesOpen(false)} style={{ textDecoration: 'none', display: 'flex', gap: '1rem', padding: '0.75rem', borderRadius: '12px', transition: 'background 0.2s' }} onMouseEnter={(e) => (e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(76,87,244,0.05)')} onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}>
+                    <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(239,68,68,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>🔧</div>
+                    <div>
+                      <div style={{ color: 'var(--color-text)', fontWeight: 600, fontFamily: "'Inter', sans-serif", fontSize: '0.95rem' }}>Report Maintenance</div>
+                      <div style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem', fontFamily: "'Inter', sans-serif", marginTop: '2px' }}>Log an issue 24/7</div>
                     </div>
                   </Link>
                   <Link to="/landlords" onClick={() => setServicesOpen(false)} style={{ textDecoration: 'none', display: 'flex', gap: '1rem', padding: '0.75rem', borderRadius: '12px', transition: 'background 0.2s' }} onMouseEnter={(e) => (e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(76,87,244,0.05)')} onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}>

@@ -17,6 +17,7 @@ const AreasPage = lazy(() => import('./pages/AreasPage'));
 const TenantsPage = lazy(() => import('./pages/TenantsPage'));
 const LandlordsPage = lazy(() => import('./pages/LandlordsPage'));
 const StudentsPage = lazy(() => import('./pages/StudentsPage'));
+const MaintenancePage = lazy(() => import('./pages/MaintenancePage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 function PageLoader() {
@@ -42,6 +43,7 @@ export default function App() {
                 <Route path="/tenants" element={<TenantsPage />} />
                 <Route path="/landlords" element={<LandlordsPage />} />
                 <Route path="/students" element={<StudentsPage />} />
+                <Route path="/maintenance" element={<MaintenancePage />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </Suspense>

@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import Accordion from '../components/Accordion';
 
 const STEPS = [
@@ -62,8 +63,21 @@ export default function TenantsPage() {
         </div>
       </section>
 
+      {/* Maintenance CTA */}
+      <section style={{ padding: '4rem 5vw', background: 'var(--color-bg)' }}>
+        <div style={{ maxWidth: '900px', margin: '0 auto', background: 'linear-gradient(135deg, #4C57F4, #20A6E8)', borderRadius: '16px', padding: '3rem 2rem', color: '#fff', textAlign: 'center', boxShadow: '0 10px 40px rgba(76,87,244,0.2)' }}>
+          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: '2rem', marginBottom: '1rem' }}>Need to report an issue?</h2>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '1.05rem', opacity: 0.9, maxWidth: '600px', margin: '0 auto 2rem' }}>
+            Our intelligent maintenance portal helps diagnose common problems instantly and dispatches contractors for repairs 24/7.
+          </p>
+          <Link to="/maintenance" style={{ display: 'inline-block', background: '#fff', color: '#4C57F4', textDecoration: 'none', padding: '0.9rem 2.5rem', borderRadius: '10px', fontWeight: 600, fontFamily: "'Inter', sans-serif", boxShadow: '0 4px 15px rgba(0,0,0,0.1)', transition: 'transform 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
+            Report Maintenance
+          </Link>
+        </div>
+      </section>
+
       {/* FAQ */}
-      <section style={{ padding: '3rem 5vw 5rem', background: 'linear-gradient(135deg, #f8f9ff 0%, #eef2ff 100%)' }}>
+      <section style={{ padding: '4rem 5vw 5rem', background: 'linear-gradient(135deg, #f8f9ff 0%, #eef2ff 100%)' }}>
         <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', textAlign: 'center', color: 'var(--color-text)', marginBottom: '2.5rem' }}>Frequently Asked Questions</h2>
         <div style={{ maxWidth: '720px', margin: '0 auto' }}>
           <Accordion items={FAQ} />
