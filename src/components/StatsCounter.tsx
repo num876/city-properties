@@ -73,7 +73,7 @@ export default function StatsCounter({ stats }: { stats: Stat[] }) {
     <section style={{ 
       position: 'relative', 
       zIndex: 10,
-      marginTop: '-80px', // Overlap the hero
+      marginTop: '4rem', // Give it dedicated space below the hero
       padding: '0 5vw',
       marginBottom: '4rem'
     }}>
