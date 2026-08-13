@@ -5,13 +5,28 @@ import PropertyMatcher from './PropertyMatcher';
 
 const PHRASES = ['Find Your Home.', 'Find Your Space.', 'Find Your Future.'];
 
+const HERO_IMAGES = [
+  '/images/demo_luxury_apt.jpg',
+  '/images/demo_penthouse.jpg',
+  '/images/demo_exec_home.jpg',
+  '/images/demo_modern_studio.jpg',
+];
+
 export default function Hero() {
   const navigate = useNavigate();
   const [isMatcherOpen, setIsMatcherOpen] = useState(false);
+  const [bgIndex, setBgIndex] = useState(0);
   const phraseRef = useRef<HTMLSpanElement>(null);
   const phraseIndex = useRef(0);
   const charIndex = useRef(0);
   const deleting = useRef(false);
+
+  useEffect(() => {
+    const bgTimer = setInterval(() => {
+      setBgIndex((prev) => (prev + 1) % HERO_IMAGES.length);
+    }, 6000);
+    return () => clearInterval(bgTimer);
+  }, []);
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
@@ -46,11 +61,20 @@ export default function Hero() {
         display: 'flex', alignItems: 'center', justifyContent: 'flex-start', overflow: 'hidden',
       }}
     >
-      <div style={{
-        position: 'absolute', inset: 0,
-        backgroundImage: "url('/images/demo_luxury_apt.jpg')",
-        backgroundSize: 'cover', backgroundPosition: 'center', zIndex: 0,
-      }} />
+      <AnimatePresence>
+        <motion.div
+          key={bgIndex}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.5 }}
+          style={{
+            position: 'absolute', inset: 0,
+            backgroundImage: `url('${HERO_IMAGES[bgIndex]}')`,
+            backgroundSize: 'cover', backgroundPosition: 'center', zIndex: 0,
+          }}
+        />
+      </AnimatePresence>
       <div style={{
         position: 'absolute', inset: 0,
         background: 'linear-gradient(90deg, rgba(10,10,30,0.88) 0%, rgba(10,10,30,0.5) 55%, transparent 100%)',
