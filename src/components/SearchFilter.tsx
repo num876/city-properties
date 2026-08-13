@@ -25,7 +25,7 @@ export default function SearchFilter({ onSearch }: SearchFilterProps) {
       style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}
     >
       <div style={{ position: 'relative', flex: 1, maxWidth: '480px' }}>
-        <span style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', fontSize: '1.1rem', pointerEvents: 'none' }}>🔍</span>
+        <span style={{ position: 'absolute', left: '1.25rem', top: '50%', transform: 'translateY(-50%)', fontSize: '1.25rem', pointerEvents: 'none', opacity: 0.5 }}>🔍</span>
         <input
           type="text"
           placeholder="Search by area, type, keyword…"
@@ -33,15 +33,15 @@ export default function SearchFilter({ onSearch }: SearchFilterProps) {
           onChange={handleChange}
           style={{
             width: '100%',
-            padding: '0.75rem 1rem 0.75rem 2.8rem',
-            fontSize: '0.95rem',
+            padding: '1rem 1.25rem 1rem 3.2rem',
+            fontSize: '1.05rem',
             fontFamily: "'Inter', sans-serif",
-            border: '1px solid rgba(76,87,244,0.25)',
-            borderRadius: '10px',
-            background: 'var(--color-surface)',
+            border: '2px solid rgba(76,87,244,0.15)',
+            borderRadius: '12px',
+            background: 'var(--color-bg)',
             color: 'var(--color-text)',
             outline: 'none',
-            boxShadow: '0 2px 8px rgba(76,87,244,0.06)',
+            transition: 'border-color 0.2s ease',
           }}
           aria-label="Search properties"
         />
@@ -52,14 +52,15 @@ export default function SearchFilter({ onSearch }: SearchFilterProps) {
           animate={{ opacity: 1 }}
           onClick={handleClear}
           style={{
-            padding: '0.75rem 1.25rem',
-            background: '#f3f4f6',
+            padding: '0.85rem 1.5rem',
+            background: 'rgba(76,87,244,0.1)',
             border: 'none',
-            borderRadius: '10px',
+            borderRadius: '12px',
             cursor: 'pointer',
             fontFamily: "'Inter', sans-serif",
-            fontSize: '0.9rem',
-            color: '#374151',
+            fontWeight: 600,
+            fontSize: '0.95rem',
+            color: '#4C57F4',
           }}
         >
           Clear
