@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../design/theme';
+import SearchModal from './SearchModal';
 
 const NAV_LINKS = [
   { to: '/', label: 'Home' },
@@ -12,728 +13,356 @@ const NAV_LINKS = [
   { to: '/contact', label: 'Contact' },
 ];
 
-const MOBILE_EXTRAS = [
-  { to: '/tenants', label: 'Tenants Guide' },
-  { to: '/maintenance', label: 'Report Maintenance' },
-  { to: '/landlords', label: 'Landlords' },
-];
-
 export default function Header() {
   const { isDark, toggleTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
-  const [menuOpen, setMenuOpen] = useState(false);
+  
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const searchInputRef = useRef<HTMLInputElement>(null);
+  const [hoveredPath, setHoveredPath] = useState<string | null>(null);
 
-  // Detect scroll to add shadow/blur boost
+  // Detect scroll for dynamic pill sizing/opacity
   useEffect(() => {
-    const handle = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handle, { passive: true });
-    return () => window.removeEventListener('scroll', handle);
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close drawer/dropdowns on route change
+  // Close modals on route change
   useEffect(() => {
     setMenuOpen(false);
     setServicesOpen(false);
     setSearchOpen(false);
   }, [location.pathname]);
 
-  // Focus search input when opened
+  // Global search shortcut listener
   useEffect(() => {
-    if (searchOpen && searchInputRef.current) {
-      searchInputRef.current.focus();
-    }
-  }, [searchOpen]);
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchTerm.trim()) {
-      navigate('/properties');
-      setSearchOpen(false);
-      setSearchTerm('');
-    }
-  };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setSearchOpen(true);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   return (
     <>
-      {/* ── Announcement Bar ── */}
+      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
+
+      {/* Floating Pill Header Wrapper */}
       <div
         style={{
-          background: 'linear-gradient(90deg, #4C57F4, #20A6E8)',
-          color: '#fff',
-          textAlign: 'center',
-          padding: '8px 15px',
-          fontSize: '0.8rem',
-          fontWeight: 600,
-          fontFamily: "'Inter', sans-serif",
-          letterSpacing: '0.5px',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          gap: '8px',
-          zIndex: 101,
-          position: 'relative'
-        }}
-      >
-        <span style={{ fontSize: '1rem' }}>🏆</span>
-        Voted Oxford's Best Letting Agency 2026
-        <Link to="/about" style={{ color: '#fff', textDecoration: 'underline', marginLeft: '8px', fontWeight: 700 }}>
-          Read More
-        </Link>
-      </div>
-
-      <header
-        style={{
-          position: 'sticky',
+          position: 'fixed',
           top: 0,
+          left: 0,
+          right: 0,
           zIndex: 100,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '0 5vw',
-          height: '76px',
-          background: isDark
-            ? scrolled ? 'rgba(8,8,24,0.95)' : 'rgba(10,10,30,0.85)'
-            : scrolled ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.85)',
-          backdropFilter: 'blur(24px)',
-          WebkitBackdropFilter: 'blur(24px)',
-          borderBottom: scrolled
-            ? isDark ? '1px solid rgba(76,87,244,0.2)' : '1px solid rgba(76,87,244,0.12)'
-            : '1px solid transparent',
-          boxShadow: scrolled
-            ? isDark ? '0 4px 30px rgba(0,0,0,0.4)' : '0 4px 30px rgba(76,87,244,0.08)'
-            : 'none',
-          transition: 'all 0.35s ease',
+          padding: scrolled ? '15px 20px' : '25px 20px',
+          transition: 'padding 0.3s ease',
+          pointerEvents: 'none', // allow clicking through empty space
         }}
       >
-        {/* ── Logo ── */}
-        <Link
-          to="/"
-          style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '12px' }}
+        <header
+          style={{
+            pointerEvents: 'auto',
+            margin: '0 auto',
+            maxWidth: '1200px',
+            height: '70px',
+            borderRadius: '100px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '0 1.5rem',
+            background: isDark
+              ? 'rgba(10,10,30,0.7)'
+              : 'rgba(255,255,255,0.7)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            border: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(255,255,255,0.5)',
+            boxShadow: isDark
+              ? '0 10px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1)'
+              : '0 10px 40px rgba(76,87,244,0.1), inset 0 1px 0 rgba(255,255,255,1)',
+            transition: 'all 0.3s ease',
+          }}
         >
-          <motion.img
-            src="/images/logo.jpg"
-            alt="City Properties"
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-            style={{
-              width: '42px',
-              height: '42px',
-              borderRadius: '10px',
-              objectFit: 'cover',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-              flexShrink: 0,
-            }}
-          />
-          <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1 }}>
-            <span
-              style={{
-                fontFamily: "'Playfair Display', serif",
-                fontWeight: 700,
-                fontSize: '1.2rem',
-                color: 'var(--color-text)',
-                letterSpacing: '-0.3px',
-              }}
-            >
+          {/* Logo */}
+          <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '12px', zIndex: 2 }}>
+            <motion.img
+              src="/images/logo.jpg"
+              alt="City Properties"
+              whileHover={{ scale: 1.05 }}
+              style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+            />
+            <span style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1.2rem', color: 'var(--color-text)', letterSpacing: '-0.3px', display: 'none' }} className="logo-text">
               City Properties
             </span>
-            <span
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: '0.65rem',
-                color: '#4C57F4',
-                fontWeight: 700,
-                letterSpacing: '1.8px',
-                textTransform: 'uppercase',
-                marginTop: '3px',
-              }}
-            >
-              Oxford
-            </span>
-          </div>
-        </Link>
+          </Link>
 
-        {/* ── Desktop Nav ── */}
-        <nav
-          aria-label="Main navigation"
-          className="desktop-nav"
-          style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}
-        >
-          {NAV_LINKS.map(({ to, label }) => {
-            const isActive = location.pathname === to || (to !== '/' && location.pathname.startsWith(to));
-            return (
-              <Link
-                key={to}
-                to={to}
-                style={{
-                  textDecoration: 'none',
-                  position: 'relative',
-                  padding: '0.5rem 1rem',
-                  borderRadius: '10px',
-                  fontSize: '0.92rem',
-                  fontFamily: "'Inter', sans-serif",
-                  fontWeight: isActive ? 600 : 500,
-                  color: isActive ? '#4C57F4' : 'var(--color-text-muted)',
-                  background: isActive
-                    ? isDark ? 'rgba(76,87,244,0.12)' : 'rgba(76,87,244,0.08)'
-                    : 'transparent',
-                  transition: 'all 0.2s ease',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.3rem',
-                }}
-                onMouseEnter={(e) => {
-                  if (!isActive) {
-                    (e.currentTarget as HTMLElement).style.background = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(76,87,244,0.05)';
-                    (e.currentTarget as HTMLElement).style.color = 'var(--color-text)';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!isActive) {
-                    (e.currentTarget as HTMLElement).style.background = 'transparent';
-                    (e.currentTarget as HTMLElement).style.color = 'var(--color-text-muted)';
-                  }
-                }}
-              >
-                {label}
-                {isActive && (
-                  <motion.span
-                    layoutId="nav-dot"
-                    style={{
-                      position: 'absolute',
-                      bottom: '-4px',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      width: '4px',
-                      height: '4px',
-                      borderRadius: '50%',
-                      background: '#4C57F4',
-                    }}
-                  />
-                )}
-              </Link>
-            );
-          })}
-
-          {/* Mega Menu Trigger */}
-          <div
-            style={{ position: 'relative' }}
-            onMouseEnter={() => setServicesOpen(true)}
-            onMouseLeave={() => setServicesOpen(false)}
+          {/* Desktop Navigation */}
+          <nav
+            className="desktop-nav"
+            style={{ display: 'flex', alignItems: 'center', gap: '0.2rem', position: 'relative' }}
+            onMouseLeave={() => setHoveredPath(null)}
           >
-            <button
-              style={{
-                background: servicesOpen ? (isDark ? 'rgba(255,255,255,0.06)' : 'rgba(76,87,244,0.05)') : 'transparent',
-                border: 'none',
-                padding: '0.5rem 1rem',
-                borderRadius: '10px',
-                fontSize: '0.92rem',
-                fontFamily: "'Inter', sans-serif",
-                fontWeight: 500,
-                color: servicesOpen ? 'var(--color-text)' : 'var(--color-text-muted)',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.4rem',
-                transition: 'all 0.2s ease',
-              }}
-            >
-              Services
-              <motion.span animate={{ rotate: servicesOpen ? 180 : 0 }} transition={{ duration: 0.2 }} style={{ fontSize: '0.8rem' }}>
-                ▼
-              </motion.span>
-            </button>
-
-            {/* Dropdown */}
-            <AnimatePresence>
-              {servicesOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                  transition={{ duration: 0.2 }}
-                  style={{
-                    position: 'absolute',
-                    top: '100%',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    background: 'var(--color-surface)',
-                    border: '1px solid var(--color-border)',
-                    borderRadius: '16px',
-                    padding: '1.25rem',
-                    width: '320px',
-                    boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '0.75rem',
-                    zIndex: 110,
-                  }}
-                >
-                  <Link to="/tenants" onClick={() => setServicesOpen(false)} style={{ textDecoration: 'none', display: 'flex', gap: '1rem', padding: '0.75rem', borderRadius: '12px', transition: 'background 0.2s' }} onMouseEnter={(e) => (e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(76,87,244,0.05)')} onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}>
-                    <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(76,87,244,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>👥</div>
-                    <div>
-                      <div style={{ color: 'var(--color-text)', fontWeight: 600, fontFamily: "'Inter', sans-serif", fontSize: '0.95rem' }}>Tenants Guide</div>
-                      <div style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem', fontFamily: "'Inter', sans-serif", marginTop: '2px' }}>Step-by-step renting process</div>
-                    </div>
-                  </Link>
-                  <Link to="/maintenance" onClick={() => setServicesOpen(false)} style={{ textDecoration: 'none', display: 'flex', gap: '1rem', padding: '0.75rem', borderRadius: '12px', transition: 'background 0.2s' }} onMouseEnter={(e) => (e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(76,87,244,0.05)')} onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}>
-                    <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(239,68,68,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>🔧</div>
-                    <div>
-                      <div style={{ color: 'var(--color-text)', fontWeight: 600, fontFamily: "'Inter', sans-serif", fontSize: '0.95rem' }}>Report Maintenance</div>
-                      <div style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem', fontFamily: "'Inter', sans-serif", marginTop: '2px' }}>Log an issue 24/7</div>
-                    </div>
-                  </Link>
-                  <Link to="/landlords" onClick={() => setServicesOpen(false)} style={{ textDecoration: 'none', display: 'flex', gap: '1rem', padding: '0.75rem', borderRadius: '12px', transition: 'background 0.2s' }} onMouseEnter={(e) => (e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(76,87,244,0.05)')} onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}>
-                    <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(32,166,232,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>🔑</div>
-                    <div>
-                      <div style={{ color: 'var(--color-text)', fontWeight: 600, fontFamily: "'Inter', sans-serif", fontSize: '0.95rem' }}>Landlords Hub</div>
-                      <div style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem', fontFamily: "'Inter', sans-serif", marginTop: '2px' }}>Management & valuations</div>
-                    </div>
-                  </Link>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </nav>
-
-        {/* ── Right Controls ── */}
-        <div className="desktop-nav" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          
-          {/* Expandable Search */}
-          <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-            <AnimatePresence>
-              {searchOpen && (
-                <motion.form
-                  initial={{ width: 0, opacity: 0 }}
-                  animate={{ width: 220, opacity: 1 }}
-                  exit={{ width: 0, opacity: 0 }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                  onSubmit={handleSearch}
-                  style={{ overflow: 'hidden', marginRight: '0.5rem' }}
-                >
-                  <input
-                    ref={searchInputRef}
-                    type="text"
-                    placeholder="Search properties..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    onBlur={() => !searchTerm && setSearchOpen(false)}
-                    style={{
-                      width: '100%',
-                      padding: '0.6rem 1rem',
-                      borderRadius: '20px',
-                      border: '1px solid var(--color-border)',
-                      background: 'var(--color-surface)',
-                      color: 'var(--color-text)',
-                      fontFamily: "'Inter', sans-serif",
-                      fontSize: '0.9rem',
-                      outline: 'none',
-                    }}
-                  />
-                </motion.form>
-              )}
-            </AnimatePresence>
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => setSearchOpen(!searchOpen)}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                color: 'var(--color-text)',
-                cursor: 'pointer',
-                fontSize: '1.2rem',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '38px',
-                height: '38px',
-                borderRadius: '50%',
-              }}
-            >
-              🔍
-            </motion.button>
-          </div>
-
-          {/* Theme toggle */}
-          <motion.button
-            whileHover={{ scale: 1.05, rotate: 15 }}
-            whileTap={{ scale: 0.92 }}
-            onClick={toggleTheme}
-            aria-label="Toggle dark mode"
-            style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: '12px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '1.1rem',
-              background: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(76,87,244,0.06)',
-              border: isDark ? '1px solid rgba(255,255,255,0.15)' : '1px solid rgba(76,87,244,0.2)',
-              color: isDark ? '#fff' : '#4C57F4',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-            }}
-          >
-            <AnimatePresence mode="wait">
-              <motion.span
-                key={isDark ? 'sun' : 'moon'}
-                initial={{ rotate: -90, opacity: 0 }}
-                animate={{ rotate: 0, opacity: 1 }}
-                exit={{ rotate: 90, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                {isDark ? '☀' : '☾'}
-              </motion.span>
-            </AnimatePresence>
-          </motion.button>
-
-          {/* CTA */}
-          <motion.div whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.97 }}>
-            <Link
-              to="/properties"
-              style={{
-                textDecoration: 'none',
-                padding: '0.65rem 1.4rem',
-                borderRadius: '12px',
-                fontSize: '0.9rem',
-                fontFamily: "'Inter', sans-serif",
-                fontWeight: 600,
-                color: '#fff',
-                background: 'linear-gradient(135deg, #4C57F4, #20A6E8)',
-                boxShadow: '0 4px 15px rgba(76,87,244,0.4)',
-                letterSpacing: '0.3px',
-                display: 'inline-block',
-                transition: 'box-shadow 0.2s ease',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              Book Viewing
-            </Link>
-          </motion.div>
-        </div>
-
-        {/* ── Mobile Hamburger ── */}
-        <div className="hamburger" style={{ display: 'none', alignItems: 'center', gap: '0.75rem' }}>
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={() => setSearchOpen(!searchOpen)}
-            style={{
-              background: 'transparent',
-              border: 'none',
-              color: 'var(--color-text)',
-              cursor: 'pointer',
-              fontSize: '1.2rem',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            🔍
-          </motion.button>
-
-          <motion.button
-            onClick={() => setMenuOpen((o) => !o)}
-            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-            aria-expanded={menuOpen}
-            whileTap={{ scale: 0.9 }}
-            style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: '10px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              background: isDark ? 'rgba(255,255,255,0.07)' : 'rgba(76,87,244,0.07)',
-              border: isDark ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(76,87,244,0.15)',
-              cursor: 'pointer',
-              flexShrink: 0,
-            }}
-          >
-            <motion.div
-              animate={menuOpen ? 'open' : 'closed'}
-              style={{ position: 'relative', width: '18px', height: '14px' }}
-            >
-              {[0, 1, 2].map((i) => (
-                <motion.span
-                  key={i}
-                  variants={{
-                    closed: {
-                      rotate: 0,
-                      y: i === 0 ? 0 : i === 1 ? 6 : 12,
-                      opacity: 1,
-                      width: i === 2 ? '12px' : '18px',
-                    },
-                    open: {
-                      rotate: i === 0 ? 45 : i === 2 ? -45 : 0,
-                      y: i === 0 ? 6 : i === 1 ? 6 : 6,
-                      opacity: i === 1 ? 0 : 1,
-                      width: '18px',
-                    },
-                  }}
-                  transition={{ duration: 0.25 }}
-                  style={{
-                    position: 'absolute',
-                    left: 0,
-                    height: '2px',
-                    background: isDark ? '#fff' : '#4C57F4',
-                    borderRadius: '2px',
-                    transformOrigin: 'center',
-                    display: 'block',
-                  }}
-                />
-              ))}
-            </motion.div>
-          </motion.button>
-        </div>
-      </header>
-
-      {/* Mobile Search Overlay */}
-      <AnimatePresence>
-        {searchOpen && (
-          <motion.form
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            onSubmit={handleSearch}
-            className="hamburger"
-            style={{
-              display: 'none',
-              position: 'fixed',
-              top: '110px',
-              left: '5vw',
-              right: '5vw',
-              zIndex: 99,
-              padding: '1rem',
-              background: 'var(--color-surface)',
-              border: '1px solid var(--color-border)',
-              borderRadius: '14px',
-              boxShadow: '0 8px 30px rgba(0,0,0,0.15)',
-            }}
-          >
-            <input
-              ref={searchInputRef}
-              type="text"
-              placeholder="Search properties..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '0.75rem 1rem',
-                borderRadius: '10px',
-                border: '1px solid var(--color-border)',
-                background: 'var(--color-bg)',
-                color: 'var(--color-text)',
-                fontFamily: "'Inter', sans-serif",
-                fontSize: '1rem',
-                outline: 'none',
-              }}
-            />
-            <button type="submit" style={{ display: 'none' }}>Search</button>
-          </motion.form>
-        )}
-      </AnimatePresence>
-
-      {/* ── Mobile Drawer ── */}
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            initial={{ x: '100%', opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: '100%', opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 320, damping: 32 }}
-            style={{
-              position: 'fixed',
-              top: '109px',
-              right: 0,
-              bottom: 0,
-              width: '300px',
-              zIndex: 99,
-              background: isDark
-                ? 'linear-gradient(160deg, #0f0f2e 0%, #1a1a3e 100%)'
-                : 'linear-gradient(160deg, #fff 0%, #f8f9ff 100%)',
-              borderLeft: '1px solid var(--color-border)',
-              padding: '1.5rem',
-              display: 'flex',
-              flexDirection: 'column',
-              boxShadow: '-12px 0 60px rgba(0,0,0,0.18)',
-              overflowY: 'auto',
-            }}
-          >
-            {/* Drawer label */}
-            <p
-              style={{
-                fontSize: '0.7rem',
-                letterSpacing: '2px',
-                textTransform: 'uppercase',
-                color: '#4C57F4',
-                fontFamily: "'Inter', sans-serif",
-                fontWeight: 600,
-                marginBottom: '1.25rem',
-                paddingBottom: '0.75rem',
-                borderBottom: '1px solid var(--color-border)',
-              }}
-            >
-              Navigation
-            </p>
-
-            {/* Main links */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-              {NAV_LINKS.map(({ to, label }, i) => {
-                const isActive =
-                  location.pathname === to ||
-                  (to !== '/' && location.pathname.startsWith(to));
-                return (
-                  <motion.div
-                    key={to}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.05 }}
-                  >
-                    <Link
-                      to={to}
-                      onClick={() => setMenuOpen(false)}
-                      style={{
-                        textDecoration: 'none',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        padding: '0.8rem 1rem',
-                        borderRadius: '10px',
-                        fontSize: '1rem',
-                        fontFamily: "'Inter', sans-serif",
-                        fontWeight: isActive ? 600 : 450,
-                        color: isActive ? '#4C57F4' : 'var(--color-text)',
-                        background: isActive
-                          ? isDark ? 'rgba(76,87,244,0.15)' : 'rgba(76,87,244,0.08)'
-                          : 'transparent',
-                        transition: 'all 0.2s ease',
-                      }}
-                    >
-                      <span>{label}</span>
-                      <span style={{ opacity: 0.4, fontSize: '0.8rem' }}>›</span>
-                    </Link>
-                  </motion.div>
-                );
-              })}
-            </div>
-
-            {/* Divider with label */}
-            <p
-              style={{
-                fontSize: '0.7rem',
-                letterSpacing: '2px',
-                textTransform: 'uppercase',
-                color: 'var(--color-text-muted)',
-                fontFamily: "'Inter', sans-serif",
-                fontWeight: 600,
-                margin: '1.25rem 0 0.75rem',
-              }}
-            >
-              Services
-            </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-              {MOBILE_EXTRAS.map(({ to, label }, i) => (
-                <motion.div
+            {NAV_LINKS.map(({ to, label }) => {
+              const isActive = location.pathname === to || (to !== '/' && location.pathname.startsWith(to));
+              return (
+                <Link
                   key={to}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: (NAV_LINKS.length + i) * 0.05 }}
+                  to={to}
+                  onMouseEnter={() => setHoveredPath(to)}
+                  style={{
+                    position: 'relative',
+                    textDecoration: 'none',
+                    padding: '0.5rem 1.25rem',
+                    borderRadius: '100px',
+                    fontSize: '0.9rem',
+                    fontFamily: "'Inter', sans-serif",
+                    fontWeight: isActive ? 600 : 500,
+                    color: isActive ? (isDark ? '#fff' : '#4C57F4') : 'var(--color-text)',
+                    zIndex: 2,
+                    transition: 'color 0.2s',
+                  }}
                 >
-                  <Link
-                    to={to}
-                    onClick={() => setMenuOpen(false)}
-                    style={{
-                      textDecoration: 'none',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      padding: '0.8rem 1rem',
-                      borderRadius: '10px',
-                      fontSize: '0.95rem',
-                      fontFamily: "'Inter', sans-serif",
-                      fontWeight: 450,
-                      color: 'var(--color-text-muted)',
-                      transition: 'all 0.2s ease',
-                    }}
-                  >
-                    <span>{label}</span>
-                    <span style={{ opacity: 0.4, fontSize: '0.8rem' }}>›</span>
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
+                  {label}
+                  {hoveredPath === to && (
+                    <motion.div
+                      layoutId="nav-pill"
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        background: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(76,87,244,0.08)',
+                        borderRadius: '100px',
+                        zIndex: -1,
+                      }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                    />
+                  )}
+                </Link>
+              );
+            })}
 
-            {/* Bottom actions */}
-            <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '0.75rem', paddingTop: '1.5rem', borderTop: '1px solid var(--color-border)' }}>
-              <Link
-                to="/properties"
-                onClick={() => setMenuOpen(false)}
-                style={{
-                  textDecoration: 'none',
-                  display: 'block',
-                  textAlign: 'center',
-                  padding: '0.85rem',
-                  borderRadius: '10px',
-                  background: 'linear-gradient(90deg, #4C57F4, #20A6E8)',
-                  color: '#fff',
-                  fontFamily: "'Inter', sans-serif",
-                  fontWeight: 600,
-                  fontSize: '0.95rem',
-                  boxShadow: '0 4px 16px rgba(76,87,244,0.35)',
-                }}
-              >
-                View All Properties
-              </Link>
+            {/* Mega Menu Trigger */}
+            <div
+              style={{ position: 'relative' }}
+              onMouseEnter={() => { setHoveredPath('services'); setServicesOpen(true); }}
+              onMouseLeave={() => setServicesOpen(false)}
+            >
               <button
-                onClick={() => { toggleTheme(); setMenuOpen(false); }}
                 style={{
-                  padding: '0.75rem',
+                  position: 'relative',
                   background: 'transparent',
-                  border: '1px solid var(--color-border)',
-                  borderRadius: '10px',
-                  color: 'var(--color-text)',
+                  border: 'none',
+                  padding: '0.5rem 1.25rem',
+                  fontSize: '0.9rem',
                   fontFamily: "'Inter', sans-serif",
                   fontWeight: 500,
-                  fontSize: '0.9rem',
+                  color: 'var(--color-text)',
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '0.5rem',
+                  gap: '0.4rem',
+                  zIndex: 2,
                 }}
               >
-                {isDark ? '☀ Light Mode' : '☾ Dark Mode'}
+                Services <motion.span animate={{ rotate: servicesOpen ? 180 : 0 }} transition={{ duration: 0.2 }} style={{ fontSize: '0.7rem' }}>▼</motion.span>
+                {hoveredPath === 'services' && (
+                  <motion.div
+                    layoutId="nav-pill"
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(76,87,244,0.08)',
+                      borderRadius: '100px',
+                      zIndex: -1,
+                    }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                  />
+                )}
               </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
-      {/* ── Backdrop ── */}
+              <AnimatePresence>
+                {servicesOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    style={{
+                      position: 'absolute',
+                      top: 'calc(100% + 15px)',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      background: isDark ? 'rgba(15,15,35,0.95)' : 'rgba(255,255,255,0.95)',
+                      backdropFilter: 'blur(20px)',
+                      border: '1px solid var(--color-border)',
+                      borderRadius: '20px',
+                      padding: '1.5rem',
+                      width: '400px',
+                      boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
+                      display: 'grid',
+                      gridTemplateColumns: '1fr 1fr',
+                      gap: '1rem',
+                      zIndex: 110,
+                    }}
+                  >
+                    {/* Column 1 */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      <p style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--color-text-muted)', fontWeight: 700, fontFamily: "'Inter', sans-serif", marginBottom: '0.5rem' }}>For Tenants</p>
+                      <MenuLink to="/tenants" icon="👥" title="Tenants Guide" />
+                      <MenuLink to="/maintenance" icon="🔧" title="Report Repair" />
+                      <MenuLink to="/students" icon="🎓" title="Student Hub" />
+                    </div>
+                    {/* Column 2 */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      <p style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--color-text-muted)', fontWeight: 700, fontFamily: "'Inter', sans-serif", marginBottom: '0.5rem' }}>For Landlords</p>
+                      <MenuLink to="/landlords" icon="🔑" title="Management" />
+                      <MenuLink to="/contact" icon="📈" title="Free Valuation" />
+                      <div style={{ marginTop: 'auto', paddingTop: '1rem' }}>
+                        <Link to="/properties" onClick={() => setServicesOpen(false)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(90deg, #4C57F4, #20A6E8)', color: '#fff', textDecoration: 'none', padding: '0.5rem', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 600, fontFamily: "'Inter', sans-serif" }}>
+                          View All Lets →
+                        </Link>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </nav>
+
+          {/* Right Controls */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', zIndex: 2 }}>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setSearchOpen(true)}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '0.5rem',
+                background: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
+                border: '1px solid var(--color-border)',
+                borderRadius: '100px',
+                padding: '0.4rem 0.8rem',
+                color: 'var(--color-text-muted)',
+                cursor: 'pointer',
+                fontFamily: "'Inter', sans-serif",
+                fontSize: '0.85rem'
+              }}
+            >
+              <span style={{ fontSize: '1rem' }}>🔍</span>
+              <span className="desktop-only">Search...</span>
+              <span className="desktop-only" style={{ background: 'var(--color-bg)', padding: '2px 6px', borderRadius: '4px', fontSize: '0.7rem', fontWeight: 600, marginLeft: '0.5rem' }}>⌘K</span>
+            </motion.button>
+
+            <motion.button
+              whileHover={{ scale: 1.1, rotate: 15 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={toggleTheme}
+              style={{
+                width: '38px', height: '38px', borderRadius: '50%',
+                background: 'transparent', border: 'none', color: 'var(--color-text)',
+                cursor: 'pointer', fontSize: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center'
+              }}
+            >
+              {isDark ? '☀' : '☾'}
+            </motion.button>
+
+            {/* Mobile Hamburger Trigger */}
+            <motion.button
+              className="hamburger"
+              onClick={() => setMenuOpen(true)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              style={{
+                display: 'none', width: '38px', height: '38px', borderRadius: '50%',
+                background: 'var(--color-text)', border: 'none', color: 'var(--color-bg)',
+                cursor: 'pointer', fontSize: '1.2rem', alignItems: 'center', justifyContent: 'center'
+              }}
+            >
+              ☰
+            </motion.button>
+
+            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="desktop-nav">
+              <Link
+                to="/properties"
+                style={{
+                  textDecoration: 'none',
+                  padding: '0.6rem 1.25rem',
+                  borderRadius: '100px',
+                  fontSize: '0.9rem',
+                  fontFamily: "'Inter', sans-serif",
+                  fontWeight: 600,
+                  color: '#fff',
+                  background: 'linear-gradient(135deg, #4C57F4, #20A6E8)',
+                  boxShadow: '0 4px 15px rgba(76,87,244,0.3)',
+                  display: 'inline-block',
+                }}
+              >
+                Book Viewing
+              </Link>
+            </motion.div>
+          </div>
+        </header>
+      </div>
+
+      {/* Full Screen Mobile Menu */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setMenuOpen(false)}
+            initial={{ opacity: 0, y: '-100%' }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: '-100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
             style={{
-              position: 'fixed',
-              inset: 0,
-              zIndex: 98,
-              background: 'rgba(0,0,0,0.5)',
-              backdropFilter: 'blur(4px)',
-              WebkitBackdropFilter: 'blur(4px)',
+              position: 'fixed', inset: 0, zIndex: 1000,
+              background: 'var(--color-bg)',
+              display: 'flex', flexDirection: 'column',
+              padding: '2rem',
+              overflowY: 'auto'
             }}
-          />
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
+              <span style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1.5rem', color: 'var(--color-text)' }}>Menu</span>
+              <button
+                onClick={() => setMenuOpen(false)}
+                style={{
+                  background: 'rgba(255,255,255,0.1)', border: '1px solid var(--color-border)', color: 'var(--color-text)',
+                  width: '40px', height: '40px', borderRadius: '50%', fontSize: '1.5rem', cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center'
+                }}
+              >
+                ×
+              </button>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', flex: 1 }}>
+              {NAV_LINKS.map(({ to, label }, i) => (
+                <motion.div key={to} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.1 }}>
+                  <Link to={to} onClick={() => setMenuOpen(false)} style={{ textDecoration: 'none', color: 'var(--color-text)', fontSize: '2.5rem', fontFamily: "'Playfair Display', serif", fontWeight: 700 }}>
+                    {label}
+                  </Link>
+                </motion.div>
+              ))}
+              
+              <div style={{ width: '100%', height: '1px', background: 'var(--color-border)', margin: '1rem 0' }} />
+              
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                 <Link to="/tenants" onClick={() => setMenuOpen(false)} style={{ color: 'var(--color-text-muted)', textDecoration: 'none', fontFamily: "'Inter', sans-serif" }}>Tenants Guide</Link>
+                 <Link to="/landlords" onClick={() => setMenuOpen(false)} style={{ color: 'var(--color-text-muted)', textDecoration: 'none', fontFamily: "'Inter', sans-serif" }}>Landlords Hub</Link>
+                 <Link to="/maintenance" onClick={() => setMenuOpen(false)} style={{ color: 'var(--color-text-muted)', textDecoration: 'none', fontFamily: "'Inter', sans-serif" }}>Report Issue</Link>
+              </motion.div>
+            </div>
+
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} style={{ marginTop: '2rem' }}>
+              <Link to="/properties" onClick={() => setMenuOpen(false)} style={{ display: 'block', textAlign: 'center', background: '#4C57F4', color: '#fff', textDecoration: 'none', padding: '1rem', borderRadius: '12px', fontFamily: "'Inter', sans-serif", fontWeight: 600, fontSize: '1.1rem' }}>
+                View All Properties
+              </Link>
+            </motion.div>
+          </motion.div>
         )}
       </AnimatePresence>
 
@@ -741,8 +370,22 @@ export default function Header() {
         @media (max-width: 950px) {
           .desktop-nav { display: none !important; }
           .hamburger { display: flex !important; }
+          .desktop-only { display: none !important; }
+        }
+        @media (min-width: 600px) {
+          .logo-text { display: block !important; }
         }
       `}</style>
     </>
+  );
+}
+
+function MenuLink({ to, icon, title }: { to: string, icon: string, title: string }) {
+  const { isDark } = useTheme();
+  return (
+    <Link to={to} style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem', borderRadius: '10px', transition: 'background 0.2s' }} onMouseEnter={e => e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+      <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(76,87,244,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem' }}>{icon}</div>
+      <span style={{ color: 'var(--color-text)', fontFamily: "'Inter', sans-serif", fontSize: '0.9rem', fontWeight: 500 }}>{title}</span>
+    </Link>
   );
 }
