@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Hero from '../components/Hero';
 import FeaturedProperties from '../components/FeaturedProperties';
 import StatsCounter from '../components/StatsCounter';
-import IconFeature from '../components/IconFeature';
+import BentoFeatureGrid from '../components/BentoFeatureGrid';
 import TestimonialsCarousel from '../components/TestimonialsCarousel';
 
 const STATS = [
@@ -14,12 +14,7 @@ const STATS = [
   { value: 12, suffix: 'k+', label: 'Happy Tenants' },
 ];
 
-const FEATURES = [
-  { icon: '🏠', title: 'Expert Local Knowledge', body: 'Born and bred in Oxford, we know every street, postcode, and neighbourhood inside out.' },
-  { icon: '🔑', title: 'Fully Managed Service', body: 'From tenant sourcing to maintenance coordination, we handle everything on your behalf.' },
-  { icon: '📞', title: '24/7 Support', body: 'Our dedicated team is available around the clock for emergencies and urgent queries.' },
-  { icon: '⭐', title: 'Trusted by Hundreds', body: 'Over 500 five-star reviews from landlords and tenants across Oxford since 2009.' },
-];
+
 
 const AREAS = [
   { name: 'City Centre', slug: 'city-centre', avg: '£1,600 pcm', img: '/images/area-centre.jpg', desc: 'The heart of Oxford with world-class universities, restaurants, and cultural venues on your doorstep.' },
@@ -51,25 +46,7 @@ export default function HomePage() {
 
       <FeaturedProperties />
 
-      {/* Why Choose Us */}
-      <section style={{ padding: '5rem 5vw', background: 'linear-gradient(135deg, #f8f9ff 0%, #eef2ff 100%)' }}>
-        <motion.div
-          initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }}
-          variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
-        >
-          <motion.p variants={sectionReveal} style={{ fontSize: '0.8rem', letterSpacing: '3px', textTransform: 'uppercase', color: '#4C57F4', fontFamily: "'Inter', sans-serif", textAlign: 'center', marginBottom: '0.5rem' }}>Why City Properties</motion.p>
-          <motion.h2 variants={sectionReveal} style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', color: 'var(--color-text)', textAlign: 'center', marginBottom: '3rem' }}>
-            The Oxford Letting Experts
-          </motion.h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.5rem', maxWidth: '1100px', margin: '0 auto' }}>
-            {FEATURES.map((f) => (
-              <motion.div key={f.title} variants={sectionReveal}>
-                <IconFeature icon={f.icon} title={f.title} body={f.body} />
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </section>
+      <BentoFeatureGrid />
 
       <TestimonialsCarousel />
 
