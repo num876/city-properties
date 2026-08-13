@@ -7,10 +7,11 @@ const AREAS = [
     slug: 'city-centre',
     avg: '£1,600 pcm',
     img: '/images/area-centre.jpg',
-    tag: 'Most Popular',
+    tag: 'Flagship',
     tagColor: '#4C57F4',
     properties: '80+',
-    desc: 'World-class universities, vibrant restaurants, and Oxford\'s most iconic streets — all on your doorstep.',
+    desc: 'World-class universities, vibrant restaurants, and Oxford\'s most iconic streets — all on your doorstep. Experience the heartbeat of the city.',
+    isFeatured: true,
   },
   {
     name: 'Headington',
@@ -21,6 +22,7 @@ const AREAS = [
     tagColor: '#059669',
     properties: '60+',
     desc: 'Excellent schools, the John Radcliffe Hospital, and a charming high street in a peaceful suburban setting.',
+    isFeatured: false,
   },
   {
     name: 'Cowley',
@@ -31,6 +33,7 @@ const AREAS = [
     tagColor: '#D97706',
     properties: '110+',
     desc: 'Oxford\'s most diverse and lively neighbourhood — great transport links and a thriving creative scene.',
+    isFeatured: false,
   },
 ];
 
@@ -40,45 +43,46 @@ const containerVariants = {
 };
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 260, damping: 28 } },
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 220, damping: 25 } },
 };
 
 export default function AreasSection() {
   const navigate = useNavigate();
 
   return (
-    <section style={{ padding: '6rem 5vw', background: 'var(--color-bg)' }}>
+    <section style={{ padding: '7rem 5vw', background: 'var(--color-bg)' }}>
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        style={{ textAlign: 'center', marginBottom: '3.5rem' }}
+        style={{ textAlign: 'center', marginBottom: '4rem' }}
       >
         <p style={{
           fontSize: '0.8rem', letterSpacing: '3px', textTransform: 'uppercase',
-          color: '#4C57F4', fontFamily: "'Inter', sans-serif", marginBottom: '0.75rem',
+          color: '#4C57F4', fontFamily: "'Inter', sans-serif", marginBottom: '0.75rem', fontWeight: 600
         }}>
           Explore Oxford
         </p>
         <h2 style={{
           fontFamily: "'Playfair Display', serif",
-          fontSize: 'clamp(2rem, 4vw, 3rem)',
+          fontSize: 'clamp(2.2rem, 4vw, 3.5rem)',
           color: 'var(--color-text)',
           margin: '0 0 1rem',
+          lineHeight: 1.1
         }}>
           Find Your Neighbourhood
         </h2>
         <p style={{
           fontFamily: "'Inter', sans-serif",
-          fontSize: '1.05rem',
+          fontSize: '1.1rem',
           color: 'var(--color-text-muted)',
-          maxWidth: '520px',
+          maxWidth: '560px',
           margin: '0 auto',
           lineHeight: 1.7,
         }}>
-          Every part of Oxford has its own character. Let us help you discover the one that feels like home.
+          Every part of Oxford has its own unique character and charm. Let us help you discover the one that feels perfectly like home.
         </p>
       </motion.div>
 
@@ -87,10 +91,8 @@ export default function AreasSection() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: '-60px' }}
+        className="bento-grid-container"
         style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-          gap: '1.75rem',
           maxWidth: '1200px',
           margin: '0 auto',
         }}
@@ -103,23 +105,27 @@ export default function AreasSection() {
             role="button"
             tabIndex={0}
             onKeyDown={(e) => e.key === 'Enter' && navigate('/areas/' + area.slug)}
+            className={area.isFeatured ? 'bento-featured' : 'bento-standard'}
             style={{
               position: 'relative',
               borderRadius: '24px',
               overflow: 'hidden',
               cursor: 'pointer',
-              height: '420px',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
+              boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
             }}
             whileHover="hover"
+            initial="initial"
           >
-            {/* Background image */}
+            {/* Background image panning */}
             <motion.img
               src={area.img}
               alt={area.name}
               loading="lazy"
-              variants={{ hover: { scale: 1.08 } }}
-              transition={{ duration: 0.5, ease: 'easeOut' }}
+              variants={{
+                initial: { scale: 1, x: 0 },
+                hover: { scale: 1.08, x: -10 }
+              }}
+              transition={{ duration: 1.5, ease: 'easeOut' }}
               style={{
                 position: 'absolute',
                 inset: 0,
@@ -129,158 +135,174 @@ export default function AreasSection() {
               }}
             />
 
-            {/* Always-on gradient overlay (bottom) */}
+            {/* Gradient overlays */}
             <div style={{
-              position: 'absolute',
-              inset: 0,
-              background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.05) 100%)',
-              zIndex: 1,
+              position: 'absolute', inset: 0,
+              background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.1) 100%)',
+              zIndex: 1, pointerEvents: 'none'
             }} />
-
-            {/* Hover tint overlay */}
             <motion.div
-              variants={{ hover: { opacity: 1 } }}
-              initial={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
+              variants={{ initial: { opacity: 0 }, hover: { opacity: 1 } }}
+              transition={{ duration: 0.4 }}
               style={{
-                position: 'absolute',
-                inset: 0,
-                background: 'linear-gradient(135deg, rgba(76,87,244,0.25) 0%, rgba(32,166,232,0.15) 100%)',
-                zIndex: 1,
+                position: 'absolute', inset: 0,
+                background: 'linear-gradient(135deg, rgba(76,87,244,0.3) 0%, rgba(32,166,232,0.1) 100%)',
+                zIndex: 1, pointerEvents: 'none'
               }}
             />
 
-            {/* Top badges */}
-            <div style={{ position: 'absolute', top: '1.25rem', left: '1.25rem', right: '1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', zIndex: 2 }}>
+            {/* Top Badges - Glassmorphic */}
+            <div style={{ 
+              position: 'absolute', top: '1.5rem', left: '1.5rem', right: '1.5rem', 
+              display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', zIndex: 2 
+            }}>
               <span style={{
                 background: area.tagColor,
                 color: '#fff',
                 fontFamily: "'Inter', sans-serif",
                 fontWeight: 700,
-                fontSize: '0.72rem',
+                fontSize: '0.75rem',
                 letterSpacing: '0.5px',
-                padding: '5px 12px',
+                padding: '6px 14px',
                 borderRadius: '999px',
+                textTransform: 'uppercase',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
               }}>
                 {area.tag}
               </span>
               <span style={{
-                background: 'rgba(0,0,0,0.45)',
-                backdropFilter: 'blur(8px)',
-                WebkitBackdropFilter: 'blur(8px)',
+                background: 'rgba(255,255,255,0.15)',
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
                 color: '#fff',
                 fontFamily: "'Inter', sans-serif",
                 fontWeight: 600,
-                fontSize: '0.78rem',
-                padding: '5px 12px',
+                fontSize: '0.8rem',
+                padding: '6px 14px',
                 borderRadius: '999px',
-                border: '1px solid rgba(255,255,255,0.15)',
+                border: '1px solid rgba(255,255,255,0.3)',
               }}>
                 {area.properties} listings
               </span>
             </div>
 
-            {/* Bottom content */}
-            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.75rem', zIndex: 2 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-                <div style={{ flex: 1, paddingRight: '1rem' }}>
+            {/* Bottom Content Area */}
+            <motion.div 
+              variants={{
+                initial: { y: 20 },
+                hover: { y: 0 }
+              }}
+              transition={{ duration: 0.4, ease: [0.25, 1, 0.5, 1] }}
+              style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '2rem 1.5rem', zIndex: 2 }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: '1rem' }}>
+                <div style={{ flex: 1 }}>
                   <h3 style={{
                     fontFamily: "'Playfair Display', serif",
-                    fontSize: '1.7rem',
+                    fontSize: area.isFeatured ? 'clamp(2rem, 3vw, 2.8rem)' : '1.8rem',
                     color: '#fff',
                     marginBottom: '0.5rem',
                     lineHeight: 1.1,
-                    textShadow: '0 2px 12px rgba(0,0,0,0.4)',
                   }}>
                     {area.name}
                   </h3>
-                  <motion.p
-                    variants={{ hover: { opacity: 1, y: 0 }, default: { opacity: 0, y: 8 } }}
-                    initial={{ opacity: 0, y: 8 }}
-                    transition={{ duration: 0.25 }}
-                    style={{
+                  <motion.div
+                    variants={{ initial: { opacity: 0, height: 0 }, hover: { opacity: 1, height: 'auto' } }}
+                    transition={{ duration: 0.4 }}
+                    style={{ overflow: 'hidden' }}
+                  >
+                    <p style={{
                       fontFamily: "'Inter', sans-serif",
-                      fontSize: '0.88rem',
+                      fontSize: '0.95rem',
                       color: 'rgba(255,255,255,0.85)',
                       lineHeight: 1.6,
                       marginBottom: '1rem',
-                    }}
-                  >
-                    {area.desc}
-                  </motion.p>
-                  <motion.div
-                    variants={{ hover: { opacity: 1, x: 0 }, default: { opacity: 0, x: -8 } }}
-                    initial={{ opacity: 0, x: -8 }}
-                    transition={{ duration: 0.25, delay: 0.05 }}
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '0.4rem',
-                      fontFamily: "'Inter', sans-serif",
-                      fontWeight: 600,
-                      fontSize: '0.85rem',
-                      color: '#fff',
-                    }}
-                  >
-                    Explore {area.name}
-                    <span style={{ fontSize: '1rem' }}>→</span>
+                      maxWidth: area.isFeatured ? '85%' : '100%',
+                    }}>
+                      {area.desc}
+                    </p>
+                    <div style={{
+                      display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+                      fontFamily: "'Inter', sans-serif", fontWeight: 600, fontSize: '0.9rem', color: '#fff',
+                    }}>
+                      Explore {area.name} <span style={{ fontSize: '1.2rem' }}>→</span>
+                    </div>
                   </motion.div>
                 </div>
+
+                {/* Price Badge */}
                 <div style={{
                   textAlign: 'right',
-                  background: 'rgba(255,255,255,0.12)',
-                  backdropFilter: 'blur(10px)',
-                  WebkitBackdropFilter: 'blur(10px)',
+                  background: 'rgba(255,255,255,0.1)',
+                  backdropFilter: 'blur(16px)',
+                  WebkitBackdropFilter: 'blur(16px)',
                   border: '1px solid rgba(255,255,255,0.2)',
-                  borderRadius: '14px',
-                  padding: '0.75rem 1rem',
+                  borderRadius: '16px',
+                  padding: '1rem',
                   flexShrink: 0,
+                  boxShadow: '0 8px 32px rgba(0,0,0,0.15)'
                 }}>
-                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.7rem', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase', letterSpacing: '1px', margin: 0 }}>From</p>
-                  <p style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.2rem', fontWeight: 700, color: '#fff', margin: '2px 0 0', whiteSpace: 'nowrap' }}>{area.avg}</p>
+                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: 'rgba(255,255,255,0.8)', textTransform: 'uppercase', letterSpacing: '1px', margin: '0 0 4px' }}>From</p>
+                  <p style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.3rem', fontWeight: 700, color: '#fff', margin: 0, whiteSpace: 'nowrap' }}>{area.avg}</p>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </motion.div>
         ))}
       </motion.div>
 
-      {/* View all areas CTA */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.3 }}
-        style={{ textAlign: 'center', marginTop: '3rem' }}
+        initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3 }}
+        style={{ textAlign: 'center', marginTop: '4rem' }}
       >
         <motion.button
-          whileHover={{ scale: 1.04, boxShadow: '0 8px 28px rgba(76,87,244,0.3)' }}
-          whileTap={{ scale: 0.97 }}
+          whileHover={{ scale: 1.05, boxShadow: '0 10px 30px rgba(76,87,244,0.3)' }}
+          whileTap={{ scale: 0.95 }}
           onClick={() => navigate('/areas')}
           style={{
-            padding: '0.9rem 2.5rem',
-            background: 'transparent',
-            border: '2px solid #4C57F4',
-            borderRadius: '12px',
-            color: '#4C57F4',
+            padding: '1rem 2.5rem',
+            background: 'var(--color-surface)',
+            border: '2px solid rgba(76,87,244,0.4)',
+            borderRadius: '999px',
+            color: 'var(--color-text)',
             fontFamily: "'Inter', sans-serif",
             fontWeight: 700,
-            fontSize: '0.95rem',
+            fontSize: '1rem',
             cursor: 'pointer',
             transition: 'all 0.2s ease',
-          }}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLElement).style.background = '#4C57F4';
-            (e.currentTarget as HTMLElement).style.color = '#fff';
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLElement).style.background = 'transparent';
-            (e.currentTarget as HTMLElement).style.color = '#4C57F4';
+            boxShadow: '0 4px 12px rgba(0,0,0,0.05)'
           }}
         >
           View All Areas →
         </motion.button>
       </motion.div>
+
+      <style>{`
+        .bento-grid-container {
+          display: grid;
+          gap: 1.5rem;
+          grid-template-columns: 1fr;
+        }
+        .bento-featured { height: 400px; }
+        .bento-standard { height: 350px; }
+
+        @media (min-width: 900px) {
+          .bento-grid-container {
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 300px);
+          }
+          .bento-featured {
+            grid-column: span 2;
+            grid-row: span 2;
+            height: 100%;
+          }
+          .bento-standard {
+            grid-column: span 1;
+            grid-row: span 1;
+            height: 100%;
+          }
+        }
+      `}</style>
     </section>
   );
 }
