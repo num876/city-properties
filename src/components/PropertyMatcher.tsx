@@ -12,7 +12,6 @@ interface PropertyMatcherProps {
 export default function PropertyMatcher({ isOpen, onClose }: PropertyMatcherProps) {
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
-  const [isCalculating, setIsCalculating] = useState(false);
   const [matches, setMatches] = useState<Property[]>([]);
 
   const [answers, setAnswers] = useState({
@@ -26,7 +25,6 @@ export default function PropertyMatcher({ isOpen, onClose }: PropertyMatcherProp
   useEffect(() => {
     if (isOpen) {
       setStep(1);
-      setIsCalculating(false);
       setMatches([]);
       setAnswers({ audience: '', budget: '', bedrooms: '', priority: '' });
       document.body.style.overflow = 'hidden';
@@ -47,7 +45,6 @@ export default function PropertyMatcher({ isOpen, onClose }: PropertyMatcherProp
 
   const calculateMatches = (finalAnswers: typeof answers) => {
     setStep(5); // calculation step
-    setIsCalculating(true);
 
     setTimeout(() => {
       // Combine all properties
@@ -89,7 +86,6 @@ export default function PropertyMatcher({ isOpen, onClose }: PropertyMatcherProp
 
       scored.sort((a, b) => b.score - a.score);
       setMatches([scored[0].property, scored[1].property]); // Top 2
-      setIsCalculating(false);
       setStep(6); // Results step
     }, 2000); // 2 second dramatic pause
   };
