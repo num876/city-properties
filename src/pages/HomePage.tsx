@@ -6,6 +6,7 @@ import FeaturedProperties from '../components/FeaturedProperties';
 import StatsCounter from '../components/StatsCounter';
 import BentoFeatureGrid from '../components/BentoFeatureGrid';
 import TestimonialsCarousel from '../components/TestimonialsCarousel';
+import AreasSection from '../components/AreasSection';
 
 const STATS = [
   { value: 250, suffix: '+', label: 'Properties Managed' },
@@ -16,16 +17,7 @@ const STATS = [
 
 
 
-const AREAS = [
-  { name: 'City Centre', slug: 'city-centre', avg: '£1,600 pcm', img: '/images/area-centre.jpg', desc: 'The heart of Oxford with world-class universities, restaurants, and cultural venues on your doorstep.' },
-  { name: 'Headington', slug: 'headington', avg: '£1,200 pcm', img: '/images/area-headington.jpg', desc: 'A charming suburb with excellent schools, the John Radcliffe Hospital, and a vibrant local high street.' },
-  { name: 'Cowley', slug: 'cowley', avg: '£950 pcm', img: '/images/area-cowley.jpg', desc: "Oxford's most diverse and lively neighbourhood with great transport links and a growing creative scene." },
-];
 
-const sectionReveal = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7 } },
-};
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -50,41 +42,7 @@ export default function HomePage() {
 
       <TestimonialsCarousel />
 
-      {/* Area Guide Preview */}
-      <section style={{ padding: '5rem 5vw', background: 'var(--color-bg)' }}>
-        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionReveal} style={{ textAlign: 'center', marginBottom: '3rem' }}>
-          <p style={{ fontSize: '0.8rem', letterSpacing: '3px', textTransform: 'uppercase', color: '#4C57F4', fontFamily: "'Inter', sans-serif", marginBottom: '0.5rem' }}>Explore Oxford</p>
-          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', color: 'var(--color-text)' }}>Popular Areas</h2>
-        </motion.div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', maxWidth: '1100px', margin: '0 auto' }}>
-          {AREAS.map((area, i) => (
-            <motion.div
-              key={area.slug}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              onClick={() => navigate('/areas/' + area.slug)}
-              style={{ cursor: 'pointer', borderRadius: '14px', overflow: 'hidden', boxShadow: '0 4px 20px rgba(0,0,0,0.08)', background: 'var(--color-surface)', position: 'relative' }}
-            >
-              <div style={{ position: 'relative', overflow: 'hidden', height: '200px' }}>
-                <img src={area.img} alt={area.name} loading="lazy" style={{ width: '100%', height: '200px', objectFit: 'cover', transition: 'transform 0.4s ease' }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLImageElement).style.transform = 'scale(1.06)'; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLImageElement).style.transform = 'scale(1)'; }}
-                />
-                <span style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'linear-gradient(90deg,#4C57F4,#20A6E8)', color: '#fff', padding: '4px 12px', borderRadius: '999px', fontSize: '0.78rem', fontWeight: 600, fontFamily: "'Inter', sans-serif" }}>
-                  {area.avg}
-                </span>
-              </div>
-              <div style={{ padding: '1.25rem' }}>
-                <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.2rem', color: 'var(--color-text)', marginBottom: '0.5rem' }}>{area.name}</h3>
-                <p style={{ fontSize: '0.88rem', color: 'var(--color-text-muted)', lineHeight: 1.65, fontFamily: "'Inter', sans-serif" }}>{area.desc}</p>
-                <p style={{ marginTop: '0.75rem', color: '#4C57F4', fontWeight: 600, fontSize: '0.85rem', fontFamily: "'Inter', sans-serif" }}>Explore {area.name} →</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
+      <AreasSection />
 
       {/* CTA Banner */}
       <section style={{
