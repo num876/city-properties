@@ -13,6 +13,30 @@ interface Property {
   featuredImage?: { node: { sourceUrl: string; altText: string } };
 }
 
+const DEMO_PROPERTIES: Property[] = [
+  {
+    id: 'demo-1',
+    title: 'Luxury Apartment, Summertown',
+    excerpt: '<p>A stunning two-bedroom apartment situated in the heart of Summertown, featuring modern amenities and a private balcony.</p>',
+    slug: 'luxury-apartment-summertown',
+    featuredImage: { node: { sourceUrl: '/images/area-centre.jpg', altText: 'Summertown Apartment' } }
+  },
+  {
+    id: 'demo-2',
+    title: 'Charming Townhouse, Jericho',
+    excerpt: '<p>Beautifully restored three-bedroom Victorian townhouse located in the sought-after Jericho neighbourhood.</p>',
+    slug: 'charming-townhouse-jericho',
+    featuredImage: { node: { sourceUrl: '/images/area-headington.jpg', altText: 'Jericho Townhouse' } }
+  },
+  {
+    id: 'demo-3',
+    title: 'Modern Studio, Cowley',
+    excerpt: '<p>Sleek and contemporary studio flat offering excellent transport links to the city centre and business parks.</p>',
+    slug: 'modern-studio-cowley',
+    featuredImage: { node: { sourceUrl: '/images/area-cowley.jpg', altText: 'Cowley Studio' } }
+  }
+];
+
 export default function FeaturedProperties() {
   const navigate = useNavigate();
   const [properties, setProperties] = useState<Property[]>([]);
@@ -22,12 +46,19 @@ export default function FeaturedProperties() {
     client.request(GET_PROPERTIES)
       .then((data) => {
         const edges = (data as any).properties?.edges || [];
-        const props = edges.map((e: any) => e.node);
+        let props = edges.map((e: any) => e.node);
         // Only take the top 3 most recent properties
-        setProperties(props.slice(0, 3));
+        props = props.slice(0, 3);
+        
+        if (props.length === 0) {
+          props = DEMO_PROPERTIES;
+        }
+        
+        setProperties(props);
         setLoading(false);
       })
       .catch(() => {
+        setProperties(DEMO_PROPERTIES);
         setLoading(false);
       });
   }, []);
