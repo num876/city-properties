@@ -8,10 +8,10 @@ import AreasSection from '../components/AreasSection';
 import CTABanner from '../components/CTABanner';
 
 const STATS = [
-  { value: 250, suffix: '+', label: 'Properties Managed' },
-  { value: 15, suffix: ' yrs', label: 'Industry Experience' },
-  { value: 98, suffix: '%', label: 'Client Satisfaction' },
-  { value: 12, suffix: 'k+', label: 'Happy Tenants' },
+  { value: 250, suffix: '+', label: 'Properties Managed', icon: '🏠', description: 'Across Oxford\'s most sought-after neighbourhoods' },
+  { value: 15, suffix: ' yrs', label: 'Industry Experience', icon: '🏆', description: 'Trusted letting experts since 2009' },
+  { value: 98, suffix: '%', label: 'Client Satisfaction', icon: '⭐', description: 'Based on 500+ verified client reviews' },
+  { value: 12, suffix: 'k+', label: 'Happy Tenants', icon: '👥', description: 'Tenants placed in their perfect Oxford home' },
 ];
 
 
