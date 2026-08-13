@@ -6,6 +6,7 @@ import { client, GET_PROPERTY_BY_SLUG } from '../api/wordpress';
 import Skeleton from '../components/Skeleton';
 import { DEMO_PROPERTIES, STUDENT_PROPERTIES } from '../data/properties';
 import type { Property } from '../data/properties';
+import PreQualifyModal from '../components/PreQualifyModal';
 
 const TABS = ['Overview', 'Location', 'Floorplan'];
 
@@ -16,6 +17,7 @@ export default function PropertyDetailPage() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState(0);
   const [hearted, setHearted] = useState(false);
+  const [isPreQualifyOpen, setIsPreQualifyOpen] = useState(false);
 
   useEffect(() => {
     if (!slug) return;
@@ -139,7 +141,7 @@ export default function PropertyDetailPage() {
           <div style={{ background: 'var(--color-surface)', borderRadius: '14px', padding: '1.5rem', border: '1px solid var(--color-border)', boxShadow: '0 4px 20px rgba(0,0,0,0.07)' }}>
             <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.1rem', color: 'var(--color-text)', marginBottom: '1rem' }}>Enquire About This Property</h3>
             <button
-              onClick={() => navigate('/contact')}
+              onClick={() => setIsPreQualifyOpen(true)}
               style={{ width: '100%', padding: '0.85rem', background: 'linear-gradient(90deg,#4C57F4,#20A6E8)', border: 'none', borderRadius: '10px', color: '#fff', fontFamily: "'Inter', sans-serif", fontWeight: 600, fontSize: '1rem', cursor: 'pointer', marginBottom: '0.75rem' }}
             >
               📅 Book a Viewing
@@ -165,6 +167,12 @@ export default function PropertyDetailPage() {
           .detail-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
+      
+      <PreQualifyModal 
+        isOpen={isPreQualifyOpen} 
+        onClose={() => setIsPreQualifyOpen(false)} 
+        propertyTitle={property.title} 
+      />
     </>
   );
 }
