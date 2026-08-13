@@ -4,26 +4,30 @@ import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { client, GET_PROPERTY_BY_SLUG } from '../api/wordpress';
 import Skeleton from '../components/Skeleton';
-
-interface PropertyDetail {
-  id: string;
-  title: string;
-  content: string;
-  featuredImage?: { node: { sourceUrl: string; altText: string } };
-}
+import { DEMO_PROPERTIES, STUDENT_PROPERTIES } from '../data/properties';
+import type { Property } from '../data/properties';
 
 const TABS = ['Overview', 'Location', 'Floorplan'];
 
 export default function PropertyDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
-  const [property, setProperty] = useState<PropertyDetail | null>(null);
+  const [property, setProperty] = useState<Property | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState(0);
   const [hearted, setHearted] = useState(false);
 
   useEffect(() => {
     if (!slug) return;
+    
+    // Check local data first
+    const localMatch = DEMO_PROPERTIES.find(p => p.slug === slug) || STUDENT_PROPERTIES.find(p => p.slug === slug);
+    if (localMatch) {
+      setProperty(localMatch);
+      setLoading(false);
+      return;
+    }
+
     client.request(GET_PROPERTY_BY_SLUG, { slug })
       .then((data) => { setProperty((data as any).propertyBy); setLoading(false); })
       .catch(() => setLoading(false));
@@ -102,7 +106,7 @@ export default function PropertyDetailPage() {
           {activeTab === 0 && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
               style={{ fontFamily: "'Inter', sans-serif", color: 'var(--color-text)', lineHeight: 1.9, fontSize: '1rem' }}
-              dangerouslySetInnerHTML={{ __html: property.content }}
+              dangerouslySetInnerHTML={{ __html: property.content || property.excerpt }}
             />
           )}
           {activeTab === 1 && (
