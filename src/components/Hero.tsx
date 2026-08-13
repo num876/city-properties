@@ -1,11 +1,13 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import PropertyMatcher from './PropertyMatcher';
 
 const PHRASES = ['Find Your Home.', 'Find Your Space.', 'Find Your Future.'];
 
 export default function Hero() {
   const navigate = useNavigate();
+  const [isMatcherOpen, setIsMatcherOpen] = useState(false);
   const phraseRef = useRef<HTMLSpanElement>(null);
   const phraseIndex = useRef(0);
   const charIndex = useRef(0);
@@ -115,19 +117,21 @@ export default function Hero() {
           >
             View Properties
           </motion.button>
+          
           <motion.button
             whileHover={{ scale: 1.04, background: 'rgba(255,255,255,0.18)' }}
             whileTap={{ scale: 0.97 }}
-            onClick={() => navigate('/contact')}
+            onClick={() => setIsMatcherOpen(true)}
             style={{
               padding: '0.9rem 2.25rem', fontSize: '1rem', fontWeight: 600,
               background: 'rgba(255,255,255,0.1)',
-              border: '1px solid rgba(255,255,255,0.35)', borderRadius: '10px',
+              border: '1px solid rgba(255,255,255,0.4)', borderRadius: '10px',
               color: '#fff', cursor: 'pointer', fontFamily: "'Inter', sans-serif",
-              backdropFilter: 'blur(8px)',
+              backdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center', gap: '0.5rem',
+              boxShadow: '0 4px 20px rgba(255,255,255,0.1)'
             }}
           >
-            Get in Touch
+            ✨ Find My Perfect Home
           </motion.button>
         </motion.div>
       </div>
@@ -149,6 +153,8 @@ export default function Hero() {
         @keyframes blink { 0%,100%{opacity:0.6} 50%{opacity:0} }
         @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.4)} }
       `}</style>
+      
+      <PropertyMatcher isOpen={isMatcherOpen} onClose={() => setIsMatcherOpen(false)} />
     </section>
   );
 }
