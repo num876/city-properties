@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 const TESTIMONIALS = [
   {
     name: 'Sarah Mitchell',
-    location: 'City Centre, Oxford',
+    location: 'City Centre',
     role: 'Tenant',
     text: 'City Properties found us the perfect flat in just two weeks. Incredibly professional and responsive throughout the entire process.',
     stars: 5,
@@ -13,7 +13,7 @@ const TESTIMONIALS = [
   },
   {
     name: 'James Thornton',
-    location: 'Headington, Oxford',
+    location: 'Headington',
     role: 'Landlord',
     text: 'As a landlord I have trusted City Properties for 5 years. Zero vacancies and excellent tenant management. Highly recommended.',
     stars: 5,
@@ -22,7 +22,7 @@ const TESTIMONIALS = [
   },
   {
     name: 'Priya Sharma',
-    location: 'Cowley, Oxford',
+    location: 'Cowley',
     role: 'Tenant',
     text: 'The team went above and beyond to help me settle into Oxford. The whole experience was seamless from viewing to signing.',
     stars: 5,
@@ -31,7 +31,7 @@ const TESTIMONIALS = [
   },
   {
     name: 'Oliver Hughes',
-    location: 'Jericho, Oxford',
+    location: 'Jericho',
     role: 'Landlord',
     text: 'Switched to City Properties after years of self-management. Night and day difference. My yields are up and my stress is down.',
     stars: 5,
@@ -40,7 +40,7 @@ const TESTIMONIALS = [
   },
   {
     name: 'Amelia Watson',
-    location: 'Summertown, Oxford',
+    location: 'Summertown',
     role: 'Tenant',
     text: 'Found my dream apartment within days. The team were warm, knowledgeable, and made the whole process feel effortless.',
     stars: 5,
@@ -49,7 +49,7 @@ const TESTIMONIALS = [
   },
   {
     name: 'Daniel Osei',
-    location: 'Botley, Oxford',
+    location: 'Botley',
     role: 'Landlord',
     text: 'Exceptional communication and a truly professional service. My property has been fully occupied for three consecutive years.',
     stars: 5,
@@ -59,87 +59,96 @@ const TESTIMONIALS = [
 ];
 
 // Duplicate for seamless loop
-const DOUBLED = [...TESTIMONIALS, ...TESTIMONIALS];
+const DOUBLED = [...TESTIMONIALS, ...TESTIMONIALS, ...TESTIMONIALS];
 
-function TestimonialCard({ t }: { t: typeof TESTIMONIALS[0] }) {
+function TestimonialCard({ t, index }: { t: typeof TESTIMONIALS[0]; index: number }) {
+  const isEven = index % 2 === 0;
+
   return (
     <div
       style={{
-        width: '340px',
+        width: '360px',
         flexShrink: 0,
-        background: 'var(--color-surface)',
+        background: 'var(--color-card-bg)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
         border: '1px solid var(--color-border)',
-        borderRadius: '20px',
-        padding: '1.75rem',
-        boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
+        borderRadius: '24px',
+        padding: '2.5rem 2rem 2rem',
+        boxShadow: 'var(--shadow-card)',
         display: 'flex',
         flexDirection: 'column',
-        gap: '1rem',
-        transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+        gap: '1.25rem',
+        transition: 'transform 0.4s ease, box-shadow 0.4s ease',
         cursor: 'default',
+        position: 'relative',
+        marginTop: isEven ? '0' : '3rem',
+        marginBottom: isEven ? '3rem' : '0',
       }}
       onMouseEnter={(e) => {
-        (e.currentTarget as HTMLElement).style.transform = 'translateY(-6px)';
-        (e.currentTarget as HTMLElement).style.boxShadow = '0 12px 40px rgba(76,87,244,0.15)';
+        (e.currentTarget as HTMLElement).style.transform = `translateY(${isEven ? '-10px' : '20px'})`;
+        (e.currentTarget as HTMLElement).style.boxShadow = '0 20px 50px rgba(76,87,244,0.15)';
       }}
       onMouseLeave={(e) => {
         (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
-        (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 24px rgba(0,0,0,0.06)';
+        (e.currentTarget as HTMLElement).style.boxShadow = 'var(--shadow-card)';
       }}
     >
-      {/* Stars */}
-      <div style={{ display: 'flex', gap: '3px' }}>
-        {Array.from({ length: t.stars }).map((_, i) => (
-          <span key={i} style={{ color: '#f59e0b', fontSize: '1rem' }}>★</span>
-        ))}
+      {/* Massive Editorial Quotation Mark */}
+      <div style={{
+        position: 'absolute',
+        top: '1rem',
+        left: '1.5rem',
+        fontFamily: "'Playfair Display', serif",
+        fontSize: '6rem',
+        lineHeight: 1,
+        color: 'var(--color-primary)',
+        opacity: 0.15,
+        pointerEvents: 'none',
+        zIndex: 0,
+      }}>
+        "
       </div>
 
-      {/* Quote */}
-      <p style={{
-        fontFamily: "'Playfair Display', serif",
-        fontSize: '1rem',
-        fontStyle: 'italic',
-        lineHeight: 1.75,
-        color: 'var(--color-text)',
-        flex: 1,
-      }}>
-        "{t.text}"
-      </p>
+      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', height: '100%' }}>
+        {/* Stars */}
+        <div style={{ display: 'flex', gap: '4px', marginBottom: '1.25rem' }}>
+          {Array.from({ length: t.stars }).map((_, i) => (
+            <span key={i} style={{ color: '#f59e0b', fontSize: '1.1rem' }}>★</span>
+          ))}
+        </div>
 
-      {/* Author */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', borderTop: '1px solid var(--color-border)', paddingTop: '1rem' }}>
-        <div style={{
-          width: '40px',
-          height: '40px',
-          borderRadius: '50%',
-          background: t.color,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#fff',
-          fontWeight: 700,
-          fontSize: '0.8rem',
-          fontFamily: "'Inter', sans-serif",
-          flexShrink: 0,
+        {/* Quote */}
+        <p style={{
+          fontFamily: "'Playfair Display', serif",
+          fontSize: '1.1rem',
+          fontStyle: 'italic',
+          lineHeight: 1.8,
+          color: 'var(--color-text)',
+          flex: 1,
+          margin: '0 0 1.5rem 0',
         }}>
-          {t.initials}
-        </div>
-        <div>
-          <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600, fontSize: '0.9rem', color: 'var(--color-text)', margin: 0 }}>
-            {t.name}
-          </p>
-          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', color: 'var(--color-text-muted)', margin: 0 }}>
-            {t.location} · {t.role}
-          </p>
-        </div>
-        {/* Google badge */}
-        <div style={{ marginLeft: 'auto', opacity: 0.5 }}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-          </svg>
+          "{t.text}"
+        </p>
+
+        {/* Author Block */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <div style={{
+            width: '46px', height: '46px', borderRadius: '50%',
+            background: t.color, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            color: '#fff', fontWeight: 700, fontSize: '0.9rem', fontFamily: "'Inter', sans-serif",
+            flexShrink: 0, boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+          }}>
+            {t.initials}
+          </div>
+          <div>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: '0.95rem', color: 'var(--color-text)', margin: '0 0 2px' }}>
+              {t.name}
+            </p>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', color: 'var(--color-text-muted)', margin: 0, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              {t.role} · {t.location}
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -151,82 +160,88 @@ export default function TestimonialsCarousel() {
 
   return (
     <section style={{
-      padding: '6rem 0',
-      background: 'linear-gradient(135deg, #f8f9ff 0%, #eef2ff 100%)',
+      padding: '7rem 0',
+      background: 'var(--color-bg)',
       overflow: 'hidden',
       position: 'relative',
     }}>
+      {/* Decorative Background Blurs */}
+      <div style={{
+        position: 'absolute', top: '10%', left: '-5%', width: '500px', height: '500px',
+        background: 'rgba(76,87,244,0.08)', filter: 'blur(120px)', borderRadius: '50%', zIndex: 0, pointerEvents: 'none'
+      }} />
+      <div style={{
+        position: 'absolute', bottom: '-10%', right: '-5%', width: '600px', height: '600px',
+        background: 'rgba(32,166,232,0.08)', filter: 'blur(150px)', borderRadius: '50%', zIndex: 0, pointerEvents: 'none'
+      }} />
+
       {/* Header */}
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        style={{ textAlign: 'center', marginBottom: '3.5rem', padding: '0 5vw' }}
+        initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
+        style={{ textAlign: 'center', marginBottom: '4rem', padding: '0 5vw', position: 'relative', zIndex: 1 }}
       >
         <p style={{
-          fontSize: '0.8rem',
-          letterSpacing: '3px',
-          textTransform: 'uppercase',
-          color: '#4C57F4',
-          fontFamily: "'Inter', sans-serif",
-          marginBottom: '0.75rem',
+          fontSize: '0.8rem', letterSpacing: '3px', textTransform: 'uppercase',
+          color: '#4C57F4', fontFamily: "'Inter', sans-serif", marginBottom: '0.75rem', fontWeight: 600
         }}>
           What Our Clients Say
         </p>
         <h2 style={{
-          fontFamily: "'Playfair Display', serif",
-          fontSize: 'clamp(2rem, 4vw, 3rem)',
-          color: 'var(--color-text)',
-          margin: '0 0 1rem',
+          fontFamily: "'Playfair Display', serif", fontSize: 'clamp(2rem, 4vw, 3.5rem)',
+          color: 'var(--color-text)', margin: '0 0 1rem', lineHeight: 1.1
         }}>
           Trusted by Hundreds Across Oxford
         </h2>
         {/* Star summary row */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
-          <div style={{ display: 'flex', gap: '3px' }}>
+          <div style={{ display: 'flex', gap: '4px' }}>
             {Array.from({ length: 5 }).map((_, i) => (
-              <span key={i} style={{ color: '#f59e0b', fontSize: '1.1rem' }}>★</span>
+              <span key={i} style={{ color: '#f59e0b', fontSize: '1.2rem' }}>★</span>
             ))}
           </div>
-          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.95rem', color: 'var(--color-text-muted)', margin: 0 }}>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '1.05rem', color: 'var(--color-text-muted)', margin: 0 }}>
             <strong style={{ color: 'var(--color-text)' }}>4.9 / 5</strong> from 500+ verified reviews
           </p>
         </div>
       </motion.div>
 
-      {/* Gradient fade edges */}
-      <div style={{
-        position: 'absolute', left: 0, top: 0, bottom: 0, width: '120px', zIndex: 2, pointerEvents: 'none',
-        background: 'linear-gradient(to right, #f1f3ff 0%, transparent 100%)',
-      }} />
-      <div style={{
-        position: 'absolute', right: 0, top: 0, bottom: 0, width: '120px', zIndex: 2, pointerEvents: 'none',
-        background: 'linear-gradient(to left, #eef2ff 0%, transparent 100%)',
-      }} />
+      {/* Marquee Track Container */}
+      <div style={{ position: 'relative', zIndex: 1 }}>
+        {/* Gradient fade edges */}
+        <div style={{
+          position: 'absolute', left: 0, top: 0, bottom: 0, width: '150px', zIndex: 2, pointerEvents: 'none',
+          background: 'linear-gradient(to right, var(--color-bg) 0%, transparent 100%)',
+        }} />
+        <div style={{
+          position: 'absolute', right: 0, top: 0, bottom: 0, width: '150px', zIndex: 2, pointerEvents: 'none',
+          background: 'linear-gradient(to left, var(--color-bg) 0%, transparent 100%)',
+        }} />
 
-      {/* Marquee track */}
-      <div
-        ref={trackRef}
-        onMouseEnter={() => { if (trackRef.current) trackRef.current.style.animationPlayState = 'paused'; }}
-        onMouseLeave={() => { if (trackRef.current) trackRef.current.style.animationPlayState = 'running'; }}
-        style={{
-          display: 'flex',
-          gap: '1.5rem',
-          width: 'max-content',
-          animation: 'marquee 40s linear infinite',
-          paddingLeft: '1.5rem',
-        }}
-      >
-        {DOUBLED.map((t, i) => (
-          <TestimonialCard key={i} t={t} />
-        ))}
+        {/* Scrolling Track */}
+        <div
+          style={{ padding: '1rem 0' }}
+          onMouseEnter={() => { if (trackRef.current) trackRef.current.style.animationPlayState = 'paused'; }}
+          onMouseLeave={() => { if (trackRef.current) trackRef.current.style.animationPlayState = 'running'; }}
+        >
+          <div
+            ref={trackRef}
+            style={{
+              display: 'flex', gap: '2rem', width: 'max-content',
+              animation: 'marquee 60s linear infinite', paddingLeft: '2rem',
+              alignItems: 'center', // important for the stagger to work visually
+            }}
+          >
+            {DOUBLED.map((t, i) => (
+              <TestimonialCard key={i} t={t} index={i} />
+            ))}
+          </div>
+        </div>
       </div>
 
       <style>{`
         @keyframes marquee {
           from { transform: translateX(0); }
-          to { transform: translateX(-50%); }
+          to { transform: translateX(-33.33%); }
         }
       `}</style>
     </section>
