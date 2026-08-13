@@ -53,7 +53,7 @@ export default function Header() {
     <>
       <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
 
-      {/* Floating Pill Header Wrapper */}
+      {/* Full-width Glassmorphic Header Wrapper */}
       <div
         style={{
           position: 'fixed',
@@ -61,31 +61,26 @@ export default function Header() {
           left: 0,
           right: 0,
           zIndex: 100,
-          padding: scrolled ? '15px 20px' : '25px 20px',
-          transition: 'padding 0.3s ease',
-          pointerEvents: 'none', // allow clicking through empty space
         }}
       >
         <header
           style={{
-            pointerEvents: 'auto',
-            margin: '0 auto',
-            maxWidth: '1200px',
-            height: '70px',
-            borderRadius: '100px',
+            height: scrolled ? '70px' : '90px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            padding: '0 1.5rem',
+            padding: '0 5vw',
             background: isDark
-              ? 'rgba(10,10,30,0.7)'
-              : 'rgba(255,255,255,0.7)',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            border: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(255,255,255,0.5)',
-            boxShadow: isDark
-              ? '0 10px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1)'
-              : '0 10px 40px rgba(76,87,244,0.1), inset 0 1px 0 rgba(255,255,255,1)',
+              ? (scrolled ? 'rgba(10,10,30,0.85)' : 'rgba(10,10,30,0.3)')
+              : (scrolled ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.4)'),
+            backdropFilter: 'blur(24px)',
+            WebkitBackdropFilter: 'blur(24px)',
+            borderBottom: isDark 
+              ? (scrolled ? '1px solid rgba(255,255,255,0.08)' : '1px solid transparent')
+              : (scrolled ? '1px solid rgba(0,0,0,0.05)' : '1px solid transparent'),
+            boxShadow: scrolled
+              ? (isDark ? '0 10px 40px rgba(0,0,0,0.5)' : '0 10px 40px rgba(76,87,244,0.08)')
+              : 'none',
             transition: 'all 0.3s ease',
           }}
         >
