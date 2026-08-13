@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../design/theme';
 import SearchModal from './SearchModal';
@@ -16,7 +16,6 @@ const NAV_LINKS = [
 export default function Header() {
   const { isDark, toggleTheme } = useTheme();
   const location = useLocation();
-  const navigate = useNavigate();
   
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);

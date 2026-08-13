@@ -44,7 +44,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
   }, [isOpen]);
 
   const results = searchTerm
-    ? allProperties.filter(p => p.title.toLowerCase().includes(searchTerm.toLowerCase()) || p.type.toLowerCase().includes(searchTerm.toLowerCase()))
+    ? allProperties.filter(p => p.title.toLowerCase().includes(searchTerm.toLowerCase()) || p.type?.toLowerCase().includes(searchTerm.toLowerCase()))
     : [];
 
   const handleSelect = (slug: string) => {
@@ -148,7 +148,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                     <img src={p.featuredImage?.node.sourceUrl} alt={p.title} style={{ width: '50px', height: '50px', borderRadius: '8px', objectFit: 'cover' }} />
                     <div style={{ flex: 1 }}>
                       <h4 style={{ color: 'var(--color-text)', fontFamily: "'Inter', sans-serif", fontSize: '0.95rem', margin: '0 0 0.2rem 0' }}>{p.title}</h4>
-                      <p style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem', margin: 0, fontFamily: "'Inter', sans-serif" }}>{p.type} • {p.bedrooms} Beds</p>
+                      <p style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem', margin: 0, fontFamily: "'Inter', sans-serif" }}>{p.type || 'Property'} • {p.bedrooms} Beds</p>
                     </div>
                     <div style={{ color: '#4C57F4', fontWeight: 600, fontFamily: "'Inter', sans-serif", fontSize: '0.9rem' }}>
                       {p.price}
