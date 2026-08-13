@@ -8,8 +8,8 @@ const PHRASES = ['Find Your Home.', 'Find Your Space.', 'Find Your Future.'];
 const HERO_IMAGES = [
   '/images/demo_luxury_apt.jpg',
   '/images/demo_penthouse.jpg',
-  '/images/demo_exec_home.jpg',
   '/images/demo_modern_studio.jpg',
+  '/images/demo_riverside_flat.jpg',
 ];
 
 export default function Hero() {
