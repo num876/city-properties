@@ -1,19 +1,13 @@
-import { useEffect, useState, useRef } from 'react';
+import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import PropertyCard from './PropertyCard';
 import { DEMO_PROPERTIES } from '../data/properties';
-import type { Property } from '../data/properties';
 
 export default function FeaturedProperties() {
   const navigate = useNavigate();
-  const [properties, setProperties] = useState<Property[]>([]);
+  const properties = DEMO_PROPERTIES.slice(0, 5);
   const carouselRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    // We use the rich local data for the demo, taking the top 5 for the carousel.
-    setProperties(DEMO_PROPERTIES.slice(0, 5));
-  }, []);
 
   return (
     <section style={{

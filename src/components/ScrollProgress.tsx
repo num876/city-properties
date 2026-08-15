@@ -1,31 +1,43 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 export default function ScrollProgress() {
-  const [progress, setProgress] = useState(0);
+  const barRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    let rafId: number;
     const handleScroll = () => {
-      const el = document.documentElement;
-      const scrolled = el.scrollTop;
-      const total = el.scrollHeight - el.clientHeight;
-      setProgress(total > 0 ? (scrolled / total) * 100 : 0);
+      rafId = requestAnimationFrame(() => {
+        const el = document.documentElement;
+        const scrolled = el.scrollTop;
+        const total = el.scrollHeight - el.clientHeight;
+        const progress = total > 0 ? scrolled / total : 0;
+        if (barRef.current) {
+          barRef.current.style.transform = `scaleX(${progress})`;
+        }
+      });
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      cancelAnimationFrame(rafId);
+    };
   }, []);
 
   return (
     <div
+      ref={barRef}
       style={{
         position: 'fixed',
         top: 0,
         left: 0,
         zIndex: 9999,
         height: '3px',
-        width: `${progress}%`,
+        width: '100%',
         background: 'linear-gradient(90deg, #4C57F4, #20A6E8)',
-        transition: 'width 0.1s ease',
         pointerEvents: 'none',
+        transformOrigin: 'left',
+        transform: 'scaleX(0)',
+        willChange: 'transform',
       }}
     />
   );

@@ -73,7 +73,7 @@ export default function BentoFeatureGrid() {
               style={{
                 position: 'absolute',
                 inset: 0,
-                backgroundImage: 'url(/images/area-centre.jpg)',
+                backgroundImage: 'url(/images/area-centre.webp)',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 opacity: 0.4,

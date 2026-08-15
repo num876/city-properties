@@ -3,11 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
 const AREAS = [
-  { name: 'City Centre', slug: 'city-centre', avg: '£1,600 pcm', img: '/images/area-centre.jpg', desc: 'World-class universities, restaurants, and cultural venues on your doorstep.' },
-  { name: 'Headington', slug: 'headington', avg: '£1,200 pcm', img: '/images/area-headington.jpg', desc: 'Excellent schools, the John Radcliffe Hospital, and a vibrant local high street.' },
-  { name: 'Cowley', slug: 'cowley', avg: '£950 pcm', img: '/images/area-cowley.jpg', desc: "Oxford's most diverse neighbourhood with great transport links and a creative scene." },
-  { name: 'Jericho', slug: 'jericho', avg: '£1,450 pcm', img: '/images/area-centre.jpg', desc: 'A bohemian enclave beloved for its independent shops, cafes, and leafy streets.' },
-  { name: 'Summertown', slug: 'summertown', avg: '£1,350 pcm', img: '/images/area-headington.jpg', desc: 'An upmarket suburb with beautiful parks, artisan bakeries, and top-rated schools.' },
+  { name: 'City Centre', slug: 'city-centre', avg: '£1,600 pcm', img: '/images/area-centre.webp', desc: 'World-class universities, restaurants, and cultural venues on your doorstep.' },
+  { name: 'Headington', slug: 'headington', avg: '£1,200 pcm', img: '/images/area-headington.webp', desc: 'Excellent schools, the John Radcliffe Hospital, and a vibrant local high street.' },
+  { name: 'Cowley', slug: 'cowley', avg: '£950 pcm', img: '/images/area-cowley.webp', desc: "Oxford's most diverse neighbourhood with great transport links and a creative scene." },
+  { name: 'Jericho', slug: 'jericho', avg: '£1,450 pcm', img: '/images/area-centre.webp', desc: 'A bohemian enclave beloved for its independent shops, cafes, and leafy streets.' },
+  { name: 'Summertown', slug: 'summertown', avg: '£1,350 pcm', img: '/images/area-headington.webp', desc: 'An upmarket suburb with beautiful parks, artisan bakeries, and top-rated schools.' },
 ];
 
 export default function AreasPage() {
@@ -34,7 +34,7 @@ export default function AreasPage() {
         {/* Background Image & Gradient */}
         <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
           <img 
-            src="/images/area-headington.jpg" 
+            src="/images/area-headington.webp" 
             alt="Oxford scenic view"
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />

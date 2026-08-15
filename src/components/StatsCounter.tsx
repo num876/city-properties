@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 interface Stat {
@@ -38,34 +38,37 @@ const Icons: Record<string, React.ReactNode> = {
 };
 
 function Counter({ value, suffix }: { value: number; suffix: string }) {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLSpanElement>(null);
   const started = useRef(false);
 
   useEffect(() => {
+    let rafId: number;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !started.current) {
           started.current = true;
-          let start = 0;
           const duration = 1800;
-          const steps = 60;
-          const step = value / steps;
-          const interval = duration / steps;
-          const timer = setInterval(() => {
-            start += step;
-            if (start >= value) { setCount(value); clearInterval(timer); }
-            else setCount(Math.floor(start));
-          }, interval);
+          const startTime = performance.now();
+          const animate = (now: number) => {
+            const elapsed = now - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            // Ease-out curve for a polished feel
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const current = Math.floor(eased * value);
+            if (ref.current) ref.current.textContent = `${current}${suffix}`;
+            if (progress < 1) rafId = requestAnimationFrame(animate);
+            else if (ref.current) ref.current.textContent = `${value}${suffix}`;
+          };
+          rafId = requestAnimationFrame(animate);
         }
       },
       { threshold: 0.1 },
     );
     if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, [value]);
+    return () => { observer.disconnect(); cancelAnimationFrame(rafId); };
+  }, [value, suffix]);
 
-  return <span ref={ref}>{count}{suffix}</span>;
+  return <span ref={ref}>0{suffix}</span>;
 }
 
 export default function StatsCounter({ stats }: { stats: Stat[] }) {
@@ -181,19 +184,8 @@ export default function StatsCounter({ stats }: { stats: Stat[] }) {
         ))}
       </motion.div>
 
-      <style>{`
-        [data-theme="dark"] .stat-card {
-          background: rgba(20, 20, 40, 0.75) !important;
-          border: 1px solid rgba(255, 255, 255, 0.08) !important;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
-        }
-        [data-theme="dark"] .stat-card h3, [data-theme="dark"] .stat-card > div:nth-of-type(3) {
-          color: #fff !important;
-        }
-        [data-theme="dark"] .stat-card p {
-          color: #9ca3af !important;
-        }
-      `}</style>
+
+
     </section>
   );
 }

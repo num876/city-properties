@@ -1,21 +1,32 @@
-import { useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import PropertyMatcher from './PropertyMatcher';
+
+const PropertyMatcher = lazy(() => import('./PropertyMatcher'));
 
 const PHRASES = ['Find Your Home.', 'Find Your Space.', 'Find Your Future.'];
 
 const HERO_IMAGES = [
-  '/images/demo_luxury_apt.jpg',
-  '/images/demo_penthouse.jpg',
-  '/images/demo_modern_studio.jpg',
-  '/images/demo_riverside_flat.jpg',
+  '/images/demo_luxury_apt.webp',
+  '/images/demo_penthouse.webp',
+  '/images/demo_modern_studio.webp',
+  '/images/demo_riverside_flat.webp',
 ];
 
 export default function Hero() {
   const navigate = useNavigate();
   const [isMatcherOpen, setIsMatcherOpen] = useState(false);
   const [bgIndex, setBgIndex] = useState(0);
+
+  // Pre-cache next carousel images
+  useEffect(() => {
+    HERO_IMAGES.forEach((src, i) => {
+      if (i > 0) { // Skip first (already preloaded via <link>)
+        const img = new Image();
+        img.src = src;
+      }
+    });
+  }, []);
   const phraseRef = useRef<HTMLSpanElement>(null);
   const phraseIndex = useRef(0);
   const charIndex = useRef(0);
@@ -173,12 +184,11 @@ export default function Hero() {
         ↓
       </motion.div>
 
-      <style>{`
-        @keyframes blink { 0%,100%{opacity:0.6} 50%{opacity:0} }
-        @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.4)} }
-      `}</style>
-      
-      <PropertyMatcher isOpen={isMatcherOpen} onClose={() => setIsMatcherOpen(false)} />
+      {isMatcherOpen && (
+        <Suspense fallback={null}>
+          <PropertyMatcher isOpen={isMatcherOpen} onClose={() => setIsMatcherOpen(false)} />
+        </Suspense>
+      )}
     </section>
   );
 }

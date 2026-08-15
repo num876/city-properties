@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 const TESTIMONIALS = [
@@ -69,9 +69,7 @@ function TestimonialCard({ t, index }: { t: typeof TESTIMONIALS[0]; index: numbe
       style={{
         width: '360px',
         flexShrink: 0,
-        background: 'var(--color-card-bg)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
+        background: 'var(--color-surface)',
         border: '1px solid var(--color-border)',
         borderRadius: '24px',
         padding: '2.5rem 2rem 2rem',
@@ -157,9 +155,26 @@ function TestimonialCard({ t, index }: { t: typeof TESTIMONIALS[0]; index: numbe
 
 export default function TestimonialsCarousel() {
   const trackRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (trackRef.current) {
+        trackRef.current.style.animationPlayState = entry.isIntersecting ? 'running' : 'paused';
+      }
+    });
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   return (
-    <section style={{
+    <section ref={sectionRef} style={{
       padding: '7rem 0',
       background: 'var(--color-bg)',
       overflow: 'hidden',
@@ -229,6 +244,8 @@ export default function TestimonialsCarousel() {
               display: 'flex', gap: '2rem', width: 'max-content',
               animation: 'marquee 60s linear infinite', paddingLeft: '2rem',
               alignItems: 'center', // important for the stagger to work visually
+              willChange: 'transform',
+              transform: 'translateZ(0)',
             }}
           >
             {DOUBLED.map((t, i) => (
@@ -238,12 +255,8 @@ export default function TestimonialsCarousel() {
         </div>
       </div>
 
-      <style>{`
-        @keyframes marquee {
-          from { transform: translateX(0); }
-          to { transform: translateX(-33.33%); }
-        }
-      `}</style>
+
+
     </section>
   );
 }

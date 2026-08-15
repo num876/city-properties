@@ -46,7 +46,7 @@ export default function AboutPage() {
         {/* Background Image & Gradient */}
         <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
           <img 
-            src="/images/demo_victorian_townhouse.jpg" 
+            src="/images/demo_victorian_townhouse.webp" 
             alt="Beautiful Oxford Victorian Townhouse"
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />

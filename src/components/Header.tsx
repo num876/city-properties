@@ -87,7 +87,7 @@ export default function Header() {
           {/* Logo */}
           <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '12px', zIndex: 2 }}>
             <motion.img
-              src="/images/logo.jpg"
+              src="/images/logo.webp"
               alt="City Properties"
               whileHover={{ scale: 1.05 }}
               style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}

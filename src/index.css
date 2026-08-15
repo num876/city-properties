@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
-
 :root {
   --color-primary: #4C57F4;
   --color-secondary: #20A6E8;
@@ -71,4 +69,54 @@ a { transition: var(--transition); }
   overflow: hidden;
   clip: rect(0,0,0,0);
   white-space: nowrap;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Performance: Extracted keyframes from inline JSX */
+@keyframes blink { 0%,100%{opacity:0.6} 50%{opacity:0} }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.4)} }
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-33.33%); }
+}
+
+/* Utility classes (merged from global.css) */
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.glass {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(12px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: var(--shadow-card);
+}
+[data-theme='dark'] .glass {
+  background: rgba(30, 30, 30, 0.25);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* StatsCounter dark theme (extracted from inline JSX) */
+[data-theme="dark"] .stat-card {
+  background: rgba(20, 20, 40, 0.75) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+}
+[data-theme="dark"] .stat-card h3,
+[data-theme="dark"] .stat-card > div:nth-of-type(3) {
+  color: #fff !important;
+}
+[data-theme="dark"] .stat-card p {
+  color: #9ca3af !important;
 }

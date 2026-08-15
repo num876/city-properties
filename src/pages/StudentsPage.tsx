@@ -32,7 +32,7 @@ export default function StudentsPage() {
         {/* Background Image & Gradient */}
         <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
           <img 
-            src="/images/demo_student_chester.jpg" 
+            src="/images/demo_student_chester.webp" 
             alt="Students relaxing in a premium Oxford house"
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
